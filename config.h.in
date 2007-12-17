@@ -1,0 +1,7 @@
+/* config.h -- some configuration values */
+
+#define INSTALL_DIR "?bindir"
+#define DATA_DIR "?datadir"
+#define SHARE_DIR "?sharedir"
+#define BONOBO_DIR "?bonobodir"
+#define VERSION "?version"

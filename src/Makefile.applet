@@ -1,0 +1,70 @@
+# src/Makefile
+
+CC=gcc
+CFLAGS=-Wall -ggdb -DCLOSE -DAPPLET
+
+PKG_CONFIG_EXE=/usr/bin/pkg-config
+
+LIBMPD_CFLAGS=`${PKG_CONFIG_EXE} --cflags libmpd`
+LIBMPD_LIBS=`${PKG_CONFIG_EXE} --libs libmpd`
+
+GLIB_CFLAGS=`${PKG_CONFIG_EXE} --cflags glib-2.0`
+GLIB_LIBS=`${PKG_CONFIG_EXE} --libs glib-2.0`
+
+APPLET_CFLAGS=`${PKG_CONFIG_EXE} --cflags libpanelapplet-2.0`
+APPLET_LIBS=`${PKG_CONFIG_EXE} --libs libpanelapplet-2.0`
+
+FULL_CFLAGS=$(CFLAGS) $(APPLET_CFLAGS) $(LIBMPD_CFLAGS)
+FULL_LIBS=$(APPLET_LIBS) $(LIBMPD_LIBS)
+FULL_BINARY_OPTS=$(FULL_CFLAGS) $(FULL_LIBS)
+
+BINARIES=musicus_applet
+
+HEADERS=definitions.h mpd.h colorcodes.h media_browser.h support.h playlist.h playlist_gtk.h gui.h search.h preferences.h mpd_action.h definitions_applet.h applet_support.h ../config.h
+COMMON_OBJS=mpd.a.o media_browser.a.o support.a.o playlist.a.o playlist_gtk.a.o gui.a.o search.a.o preferences.a.o mpd_action.a.o applet_support.o
+ALL_OBJS=$(COMMON_OBJS) musicus_applet.o
+
+all: $(BINARIES)
+
+mpd.a.o: mpd.c $(HEADERS)
+	$(CC) -c $(CFLAGS) $(GLIB_CFLAGS) $(LIBMPD_CFLAGS) -o mpd.a.o mpd.c
+
+media_browser.a.o: media_browser.c $(HEADERS)
+	$(CC) -c $(CFLAGS) $(APPLET_CFLAGS) $(LIBMPD_CFLAGS) -o media_browser.a.o media_browser.c
+
+support.a.o: support.c $(HEADERS)
+	$(CC) -c $(CFLAGS) $(APPLET_CFLAGS) $(LIBMPD_CFLAGS) -o support.a.o support.c
+
+playlist.a.o: playlist.c $(HEADERS)
+	$(CC) -c $(CFLAGS) $(GLIB_CFLAGS) $(LIBMPD_CFLAGS) -o playlist.a.o playlist.c
+
+playlist_gtk.a.o: playlist_gtk.c $(HEADERS)
+	$(CC) -c $(CFLAGS) $(APPLET_CFLAGS) $(LIBMPD_CFLAGS) -o playlist_gtk.a.o playlist_gtk.c
+
+search.a.o: search.c $(HEADERS)
+	$(CC) -c $(CFLAGS) $(APPLET_CFLAGS) $(LIBMPD_CFLAGS) -o search.a.o search.c
+
+gui.a.o: gui.c $(HEADERS)
+	$(CC) -c $(CFLAGS) $(APPLET_CFLAGS) $(LIBMPD_CFLAGS) -o gui.a.o gui.c
+
+preferences.a.o: preferences.c $(HEADERS)
+	$(CC) -c $(CFLAGS) $(APPLET_CFLAGS) -o preferences.a.o preferences.c
+
+mpd_action.a.o: mpd_action.c $(HEADERS)
+	$(CC) -c $(CFLAGS) $(APPLET_CFLAGS) $(LIBMPD_CFLAGS) -o mpd_action.a.o mpd_action.c
+
+applet_support.o: applet_support.c $(HEADERS)
+	$(CC) -c $(CFLAGS) $(APPLET_CFLAGS) $(LIBMPD_CFLAGS) -o applet_support.o applet_support.c
+
+musicus_applet.o: musicus_applet.c $(HEADERS)
+	$(CC) -c $(CFLAGS) $(APPLET_CFLAGS) $(LIBMPD_CFLAGS) -o musicus_applet.o musicus_applet.c
+
+musicus_applet: musicus_applet.o $(COMMON_OBJS)
+	$(CC) $(FULL_LIBS) -o musicus_applet musicus_applet.o $(COMMON_OBJS)
+
+clean:
+	touch $(ALL_OBJS)
+	rm -f $(ALL_OBJS)
+	touch $(BINARIES)
+	rm -f $(BINARIES)
+

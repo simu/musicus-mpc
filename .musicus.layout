@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="applet" />
+	<File name="Doxyfile" open="1" top="0" tabpos="2">
+		<Cursor position="197" topLine="0" />
+	</File>
+	<File name="src/Makefile" open="0" top="0" tabpos="5">
+		<Cursor position="735" topLine="0" />
+	</File>
+	<File name="src/applet_support.c" open="1" top="0" tabpos="7">
+		<Cursor position="1936" topLine="41" />
+	</File>
+	<File name="src/applet_support.h" open="1" top="0" tabpos="6">
+		<Cursor position="1640" topLine="17" />
+	</File>
+	<File name="src/cli.c" open="0" top="0" tabpos="6">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="src/colorcodes.h" open="0" top="0" tabpos="1">
+		<Cursor position="132" topLine="0" />
+	</File>
+	<File name="src/definitions.h" open="1" top="0" tabpos="1">
+		<Cursor position="1250" topLine="24" />
+	</File>
+	<File name="src/definitions_applet.h" open="1" top="0" tabpos="5">
+		<Cursor position="0" topLine="16" />
+	</File>
+	<File name="src/definitions_gtk.h" open="0" top="0" tabpos="9">
+		<Cursor position="1949" topLine="48" />
+	</File>
+	<File name="src/gui.c" open="1" top="0" tabpos="9">
+		<Cursor position="18325" topLine="536" />
+	</File>
+	<File name="src/gui.h" open="0" top="0" tabpos="0">
+		<Cursor position="1008" topLine="0" />
+	</File>
+	<File name="src/media_browser.c" open="0" top="0" tabpos="7">
+		<Cursor position="126" topLine="117" />
+	</File>
+	<File name="src/media_browser.h" open="0" top="0" tabpos="0">
+		<Cursor position="1051" topLine="0" />
+	</File>
+	<File name="src/media_browser_standalone.c" open="0" top="0" tabpos="3">
+		<Cursor position="682" topLine="0" />
+	</File>
+	<File name="src/mpd.c" open="0" top="0" tabpos="0">
+		<Cursor position="248" topLine="24" />
+	</File>
+	<File name="src/mpd.h" open="0" top="0" tabpos="9">
+		<Cursor position="990" topLine="0" />
+	</File>
+	<File name="src/mpd_action.c" open="0" top="0" tabpos="8">
+		<Cursor position="1140" topLine="21" />
+	</File>
+	<File name="src/mpd_action.h" open="0" top="0" tabpos="9">
+		<Cursor position="1686" topLine="74" />
+	</File>
+	<File name="src/musicus_applet.c" open="1" top="0" tabpos="8">
+		<Cursor position="5244" topLine="147" />
+	</File>
+	<File name="src/playlist.c" open="0" top="0" tabpos="4">
+		<Cursor position="124" topLine="0" />
+	</File>
+	<File name="src/playlist.h" open="0" top="0" tabpos="2">
+		<Cursor position="999" topLine="0" />
+	</File>
+	<File name="src/playlist_gtk.c" open="1" top="1" tabpos="10">
+		<Cursor position="4125" topLine="90" />
+	</File>
+	<File name="src/playlist_gtk.h" open="0" top="0" tabpos="0">
+		<Cursor position="1031" topLine="0" />
+	</File>
+	<File name="src/preferences.c" open="1" top="0" tabpos="4">
+		<Cursor position="16948" topLine="473" />
+	</File>
+	<File name="src/preferences.h" open="0" top="0" tabpos="7">
+		<Cursor position="1018" topLine="0" />
+	</File>
+	<File name="src/search.c" open="0" top="0" tabpos="0">
+		<Cursor position="134" topLine="0" />
+	</File>
+	<File name="src/search.h" open="0" top="0" tabpos="0">
+		<Cursor position="1016" topLine="13" />
+	</File>
+	<File name="src/support.c" open="1" top="0" tabpos="3">
+		<Cursor position="2948" topLine="57" />
+	</File>
+	<File name="src/support.h" open="0" top="0" tabpos="10">
+		<Cursor position="1191" topLine="12" />
+	</File>
+</CodeBlocks_layout_file>

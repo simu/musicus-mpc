@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="musicus" />
+		<Option makefile_is_custom="1" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="all">
+				<Option output="src/mpd_gui" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="musicus">
+				<Option output="src/mpd_gui" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="applet">
+				<Option output="src/musicus_applet" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="Doxyfile">
+			<Option target="all" />
+		</Unit>
+		<Unit filename="GNOME_MusicusApplet.server.in">
+			<Option target="all" />
+			<Option target="musicus" />
+			<Option target="applet" />
+		</Unit>
+		<Unit filename="Makefile">
+			<Option target="all" />
+		</Unit>
+		<Unit filename="config.h.in">
+			<Option target="all" />
+			<Option target="musicus" />
+			<Option target="applet" />
+		</Unit>
+		<Unit filename="src/Makefile">
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/applet_support.c">
+			<Option compilerVar="CC" />
+			<Option target="applet" />
+		</Unit>
+		<Unit filename="src/applet_support.h">
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/cli.c">
+			<Option compilerVar="CC" />
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/colorcodes.h">
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/definitions.h">
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/definitions_applet.h">
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/definitions_gtk.h">
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/gui.c">
+			<Option compilerVar="CC" />
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/gui.h">
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/media_browser.c">
+			<Option compilerVar="CC" />
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/media_browser.h">
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/media_browser_standalone.c">
+			<Option compilerVar="CC" />
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/mpd.c">
+			<Option compilerVar="CC" />
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/mpd.h">
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/mpd_action.c">
+			<Option compilerVar="CC" />
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/mpd_action.h">
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/musicus.c">
+			<Option compilerVar="CC" />
+			<Option target="all" />
+			<Option target="musicus" />
+		</Unit>
+		<Unit filename="src/musicus_applet.c">
+			<Option compilerVar="CC" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/playlist.c">
+			<Option compilerVar="CC" />
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/playlist.h">
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/playlist_gtk.c">
+			<Option compilerVar="CC" />
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/playlist_gtk.h">
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/preferences.c">
+			<Option compilerVar="CC" />
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/preferences.h">
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/search.c">
+			<Option compilerVar="CC" />
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/search.h">
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/support.c">
+			<Option compilerVar="CC" />
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="src/support.h">
+			<Option target="dbg" />
+			<Option target="rel" />
+			<Option target="all" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

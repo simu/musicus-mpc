@@ -1,0 +1,9 @@
+<Root>
+	<popups>
+		<popup name="button3">
+			<menuitem name="Item 1" verb="Properties" _label="_Properties" pixtype="stock" pixname="gtk-properties"></menuitem>
+			<menuitem name="Item 2" verb="AppletText" _label="_Show applet text" pixtype="stock" pixname="gtk-edit"></menuitem>
+			<menuitem name="Item 3" verb="About" _label="_About" pixtype="stock" pixname="gnome-stock-about"></menuitem>
+		</popup>
+	</popups>
+</Root>
