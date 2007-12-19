@@ -125,8 +125,15 @@ static gboolean musicus_applet_fill (PanelApplet *applet, const gchar *iid, gpoi
 
 	/* enable debug output */
 	debug = 1;
+	log_file = stdout;
+	err_file = stderr;
 
 	get_data_dir(datadir,512,TRUE);
+	
+	config_get_config_file(TRUE);
+	if(!config_load())
+		config_new();	
+
 	snprintf(data_dir, 512, "%s/data", datadir);
 
 	/* open log file */
@@ -141,8 +148,6 @@ static gboolean musicus_applet_fill (PanelApplet *applet, const gchar *iid, gpoi
 	fprintf(err_file, "---------new execution--------");
 	fflush(err_file);
 
-	config_get_config_file(TRUE);
-	config_load();
 
 	mpd_info.obj = mpd_new(HOST,PORT,PASSWORD);
 	msi_fill(&mpd_info);

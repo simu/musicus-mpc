@@ -540,6 +540,7 @@ gboolean get_data_dir(gchar *dir, int len, gboolean is_applet) {
     char *_path;
     FILE *p;
     char error_msg[4096];
+    char data_path[1024];
     struct passwd *pw;
 
     pw = getpwuid(getuid());
@@ -561,10 +562,14 @@ gboolean get_data_dir(gchar *dir, int len, gboolean is_applet) {
 		errno = 0;
 		if(mkdir(_path, 0755)==-1) {
 			snprintf(error_msg, 4096, "An error occurred while creating the directory %s.\n (mkdir: %s)", _path, strerror(errno));
-			/* create_info_dialog(NULL, "Error creating directory", error_msg); */
-			fprintf(err_file, error_msg);
-			fflush(err_file);
+			fprintf(stderr, error_msg);
+			fflush(stderr);
 			return FALSE;
+		}
+		snprintf(data_path,1024,"%s/data", _path);
+		if(mkdir(data_path, 0755)==-1) {
+			snprintf(error_msg, 4096, "An error occurred while creating the directory %s.\n (mkdir: %s)", _path, strerror(errno));
+			fprintf(stderr, error_msg);
 		}
     }
     else { fclose(p); }
