@@ -9,7 +9,7 @@ SHARE_DIR=/usr/share/gnome-applets
 
 VERSION=0.1b
 
-.PHONY: clean install install_local dist doxy GNOME_MusicusApplet.server
+.PHONY: clean install install_local dist doxy GNOME_MusicusApplet.server uninstall
 
 #export all variables
 export
@@ -45,6 +45,12 @@ install: GNOME_MusicusApplet.server
 	cp data/musicus-mpc.png $(DATA_DIR)
 	mkdir -p $(SHARE_DIR)/musicus_applet
 	cp data/GNOME_MusicusApplet.xml $(SHARE_DIR)/musicus_applet
+
+uninstall: 
+	$(cd $(INSTALL_DIR) && rm -r $(IBINARIES))
+	rm -f $(BONOBO_DIR)/GNOME_MusicusApplet.server
+	rm -f $(DATA_DIR)/musicus_mpc.png
+	rm -rf $(SHARE_DIR)/musicus_applet
 
 GNOME_MusicusApplet.server: GNOME_MusicusApplet.server.in
 	?sed -e 's#?bindir#$(INSTALL_DIR)#g' GNOME_MusicusApplet.server.in > GNOME_MusicusApplet.server
