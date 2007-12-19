@@ -36,7 +36,7 @@
  * of the applet.
  *
  * The project is currently hosted on berliOS. Visit the project overview
- * page at https://developer.berlios.de/projects/musicus-mpc/
+ * page at http://developer.berlios.de/projects/musicus-mpc/
  */
 
 #ifndef __definitions_h

@@ -7,7 +7,7 @@ SHARE_DIR=/usr/share/gnome-applets
 
 #don't edit below
 
-VERSION=0.1a
+VERSION=0.1b
 
 .PHONY: clean install install_local dist doxy GNOME_MusicusApplet.server
 
@@ -59,8 +59,8 @@ doxy:
 dist:
 	mkdir -p tmp/musicus-mpc/data
 	mkdir -p tmp/musicus-mpc/src
-	cp src/*.c src/*.h src/Makefile* tmp/musicus-mpc/src
-	cp Makefile Doxyfile TODO AUTHORS COPYING README ChangeLog GNOME_MusicusApplet.server.in config.h.in tmp/musicus-mpc
+	cp src/*.c src/*.h src/Makefile*.in tmp/musicus-mpc/src
+	cp configure Makefile.in Doxyfile TODO AUTHORS COPYING README ChangeLog GNOME_MusicusApplet.server.in config.h.in tmp/musicus-mpc
 	cp data/GNOME_MusicusApplet.xml tmp/musicus-mpc/data
 	cp data/musicus-mpc.png tmp/musicus-mpc/data
 	(cd tmp && tar cjf ../musicus-mpc-$(VERSION).tar.bz2 musicus-mpc/*)

@@ -14,7 +14,6 @@ is now usable as full mpd client.
 Install the -dev packages with your package-manager, if needed.
 * GTK+-2.0 >= 2.10.11
 * libmpd >= 0.12.0
-* libcurl >= 7.15.5
 * libpanelapplet (gnome-panel-applet library) >= 2.18
 
 == installation ==

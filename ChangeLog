@@ -1,2 +1,7 @@
 2007-12-17: version 0.1a
  * initial release
+
+2007-12-19: version 0.1b
+ * probably fixed bug concerning applet crash on connection loss to mpd
+ * some code changes
+ * basic configure system

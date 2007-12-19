@@ -9,7 +9,7 @@ OPEN:
  FUNCTIONAL:
   (000) double-click on applet => playlist window -- does not work,
         even though same code as volume-control applet
-  (001) Don't terminate abnormally if mpd service is stopped -- !IMPORTANT!
+  (001) Don't terminate abnormally if mpd service is stopped -- !IMPORTANT! 2007/12/19 probably fixed, no extended tests though. It might also have introduced a new bug concerning manual connect/disconnect from mpd
   (002) Change song order in playlist
   (003) save/load playlists (through mpd)
   (004) Volume Control
