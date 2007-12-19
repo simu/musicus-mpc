@@ -572,7 +572,7 @@ gboolean get_data_dir(gchar *dir, int len, gboolean is_applet) {
     gchar *_dir = (gchar*)malloc(length *sizeof(gchar));
 
     if(is_applet)
-		snprintf(_dir, length, "%s/.gnome2/mpd-applet", pw->pw_dir);
+		snprintf(_dir, length, "%s/.gnome2/musicus-applet", pw->pw_dir);
     else
 		snprintf(_dir, length, "%s/.musicus-mpc", pw->pw_dir);
 
