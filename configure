@@ -1,0 +1,97 @@
+#!/bin/sh
+# small configure script for musicus-mpc
+# it only checks if all libraries are present
+# if not it just aborts...
+# This replaces the pkg-config in the makefiles...
+
+check_exist()
+{
+echo -n "checking for $1 ..."
+$pkg_config_exe --modversion $1 > /dev/null 2>&1
+if [ $? -ne 0 ]
+then
+echo " not found"
+return 1
+else
+echo " found"
+return 0
+fi
+}
+
+parse_in()
+{
+echo "Creating ${1%%.in}..."
+$sed -e "s#?cc#$cc#g" -e "s#?gtk_cflags#$gtk_cflags#g" -e "s#?gtk_libs#$gtk_libs#g" -e "s#?libmpd_cflags#$libmpd_cflags#g" -e "s#?libmpd_libs#$libmpd_libs#g" -e "s#?glib_cflags#$glib_cflags#g" -e "s#?glib_libs#$glib_libs#g" -e "s#?applet_cflags#$applet_cflags#g" -e "s#?applet_libs#$applet_libs#g" -e "s#?sed#$sed#g" $1 > ${1%%.in}
+return
+}
+
+which gcc >/dev/null 2>&1
+if [ $? -ne 0 ]
+then
+echo "No GCC found..."
+echo "aborting configure ..."
+exit 1
+fi
+cc=$(which gcc)
+
+which sed >/dev/null 2>&1
+if [ $? -ne 0 ]
+then
+echo "No sed found..."
+echo "aborting configure ..."
+exit 1
+fi
+sed=$(which sed) 
+
+which pkg-config >/dev/null 2>&1
+if [ $? -ne 0 ]
+then
+echo "No pkg-config found..."
+echo "aborting configure ..."
+exit 1
+fi
+pkg_config_exe=$(which pkg-config)
+
+check_exist glib-2.0
+if [ $? -ne 0 ]
+then
+echo "aborting configure ..."
+exit 1
+fi
+
+glib_cflags=$($pkg_config_exe --cflags glib-2.0)
+glib_libs=$($pkg_config_exe --libs glib-2.0)
+
+check_exist gtk+-2.0
+if [ $? -ne 0 ]
+then
+echo "aborting configure ..."
+exit 1
+fi
+
+gtk_cflags=$($pkg_config_exe --cflags gtk+-2.0)
+gtk_libs=$($pkg_config_exe --libs gtk+-2.0)
+
+check_exist libmpd
+if [ $? -ne 0 ]
+then
+echo "aborting configure ..."
+exit 1
+fi
+
+libmpd_cflags=$($pkg_config_exe --cflags libmpd)
+libmpd_libs=$($pkg_config_exe --libs libmpd)
+
+check_exist libpanelapplet-2.0
+if [ $? -ne 0 ]
+then
+echo "aborting configure ..."
+exit 1
+fi
+
+applet_cflags=$($pkg_config_exe --cflags libpanelapplet-2.0)
+applet_libs=$($pkg_config_exe --libs libpanelapplet-2.0)
+
+parse_in Makefile.in
+parse_in src/Makefile.in
+parse_in src/Makefile.applet.in

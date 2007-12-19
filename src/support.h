@@ -47,6 +47,12 @@
 GtkTreeStore *pl_create_tree_store(MpdPlContainer *plc);
 
 /**
+ * This function creates an empty TreeStore
+ * \return the TreeStore
+ */
+GtkTreeStore *pl_empty_tree_store(void);
+
+/**
  * This function creates a ListStore from a playlist
  * \param plc the playlist
  * \return the new ListStore

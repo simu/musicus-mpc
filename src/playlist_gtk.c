@@ -61,8 +61,11 @@ GtkWidget *init_pl_widget(void) {
 		fflush(log_file);
 	}
 	/* create the tree view with the mpd playlist and set appropriate global references */
-	pl_tree_store = pl_create_tree_store(plc);
-	mpd_pl_container_free(plc);
+	if(plc == NULL) pl_tree_store = pl_empty_tree_store();
+	else {
+	    pl_tree_store = pl_create_tree_store(plc);
+	    mpd_pl_container_free(plc);
+	}
 	PlTreeStore = pl_tree_store;
 	pl_tree_view = pl_create_tree_view(GTK_TREE_MODEL(pl_tree_store));
 	PlTreeView = pl_tree_view;
@@ -115,8 +118,11 @@ void playlist_update_tree(void) {
 	if((PlTreeStore != NULL) && (PlTreeView != NULL)) {
 		/* reset and refill PlTreeStore and PlTreeView */
 		gtk_tree_store_clear(PlTreeStore);
-		PlTreeStore = pl_create_tree_store(plc);
-		mpd_pl_container_free(plc);
+		if(plc == NULL) PlTreeStore = pl_empty_tree_store();
+		else {
+		    PlTreeStore = pl_create_tree_store(plc);
+		    mpd_pl_container_free(plc);
+		}
 
 		gtk_tree_view_set_model(GTK_TREE_VIEW(PlTreeView), GTK_TREE_MODEL(PlTreeStore));
 	}
@@ -143,9 +149,15 @@ void pl_del_songs(GtkWidget *widget, gpointer data) {
 		fflush(log_file);
 	}
 
-    if(mpd_info.auto_connect) {
+    if(mpd_info.msi.connected) {
         if(!mpd_check_connected(mpd_info.obj))
-            mpd_connect(mpd_info.obj);
+            if(mpd_connect(mpd_info.obj) != MPD_OK) {
+		msi_clear(&mpd_info);
+		mpd_info.msi.connected = FALSE;
+		return;
+	    }
+	    msi_fill(&mpd_info);
+	    mpd_info.msi.connected = TRUE;
     }
 	for(i=0; i<selection_length; i++) {
 		gtk_tree_model_get_iter(tree_model, &iter, selection->data);
@@ -269,9 +281,16 @@ static void pl_row_activated(GtkTreeView *tv, GtkTreePath *path, GtkTreeViewColu
 
 	if(pl_id > -32) {
 	    // if auto connect is set, try to reconnect
-	    if(mpd_info.auto_connect) {
-	        if(!mpd_check_connected(mpd_info.obj))
-                mpd_connect(mpd_info.obj);
+	    if(mpd_info.msi.connected) {
+	        if(!mpd_check_connected(mpd_info.obj)) {
+		    if(mpd_connect(mpd_info.obj) != MPD_OK) {
+			msi_clear(&mpd_info);
+			mpd_info.msi.connected = FALSE;
+			return;
+		    }
+		    msi_fill(&mpd_info);
+		    mpd_info.msi.connected = TRUE;
+		}
             mpd_player_play_id(mpd_info.obj, pl_id);
 	    }
 	}

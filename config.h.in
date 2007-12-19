@@ -25,7 +25,7 @@
 /// the directory where the binaries are installed
 #define INSTALL_DIR "?bindir"
 /// the direcotry where the data is stored
-#define DATA_DIR "?datadir"
+#define PIXMAP_DIR "?datadir"
 /// the directory where shared data is stored
 #define SHARE_DIR "?sharedir"
 /// the bonobo server directory

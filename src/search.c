@@ -147,8 +147,15 @@ static void mpd_search(GtkWidget *widget, gpointer data) {
 	entry_string = gtk_entry_get_text(GTK_ENTRY(entry));
 	search_string = g_strdup(entry_string);
 	/* table ^= search_type */
-	if(!mpd_check_connected(mpd_info.obj))
-		mpd_connect(mpd_info.obj);
+	if(!mpd_check_connected(mpd_info.obj)) {
+		if(mpd_connect(mpd_info.obj)!=MPD_OK)  {
+		    msi_clear(&mpd_info);
+		    mpd_info.msi.connected = FALSE;
+		    return;
+		}
+		msi_fill(&mpd_info);
+		mpd_info.msi.connected = TRUE;
+	}
 	result = mpd_database_find(mpd_info.obj, search_type, search_string, TRUE);
 	/* Iterate through the found songs, using
 	 * the function mpd_data_get_next_keep(md), which

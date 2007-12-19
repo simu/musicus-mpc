@@ -83,6 +83,19 @@ MpdPlContainer *mpd_get_pl() {
 	int i;
 
 	// -1 -> fetch a new playlist
+	if(mpd_info.msi.connected) {
+	    if(!mpd_check_connected(mpd_info.obj)) {
+		if(mpd_connect(mpd_info.obj)!=MPD_OK) {
+		    msi_clear(&mpd_info);
+		    mpd_info.msi.connected = FALSE;
+		    return NULL;
+		}
+		else {
+		    msi_fill(&mpd_info);
+		    mpd_info.msi.connected = TRUE;
+		}
+	    }
+	}
 	pl_data = mpd_playlist_get_changes(mpd_info.obj, -1);
 
 	// return NULL if no songs in playlist

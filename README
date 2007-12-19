@@ -5,7 +5,7 @@ Stop, Forward, Rewind, a playlist editor and a media browser
 (and experimental lyrics fetching)
 
 
-== musicus_mpc ==
+== musicus-mpc ==
 standalone version of the windowed Playlist/Media Browser part of
 musicus-applet. This (although starting out as a testing utitlity)
 is now usable as full mpd client.
@@ -18,11 +18,16 @@ Install the -dev packages with your package-manager, if needed.
 * libpanelapplet (gnome-panel-applet library) >= 2.18
 
 == installation ==
-you might need to adjust the variables INSTALL_DIR, PKG_CONFIG_EXE
-and BONOBO_DIR in the Makefile.
-* INSTALL_DIR points to the place where the binaries are installed
-* PKG_CONFIG_EXE is the path to the pkg-config tool
+you might need to adjust the variables INSTALL_DIR, BONOBO_DIR,
+DATA_DIR and SHARE_DIR in the Makefile.
+The standard paths assume that you have GNOME installed in /usr.
+If you don't know if GNOME is installed in /usr it is probably there.
+Refer to the documentation for your distribution if unsure.
+
+* INSTALL_DIR points to the place where the binaries are installed.
 * BONOBO_DIR is the path to the bonobo components 
+* DATA_DIR is the path to the standard pximap directory (you probably don't need to change that)
+* SHARE_DIR is the path to the shared data directory for gnome-applets (you probably don't need to change this path)
 
 == documentation ==
 after running make doxy you will find the developer documentation in the

@@ -49,6 +49,7 @@ WinInfo MpdWin;
  */
 GtkWidget *mpd_win_new(int updater, int applet);
 
+
 /**
  * This function hides the not-connected message
  * and shows the mpd control elements

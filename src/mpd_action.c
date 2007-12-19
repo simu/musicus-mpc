@@ -26,6 +26,7 @@
  **********************************************************************/
 
 #include "mpd_action.h"
+#include "mpd.h"
 
 
 /************** local functions **************/
@@ -68,8 +69,16 @@ void action(GtkWidget *widget, gpointer data) {
 	MpdActionType what = GPOINTER_TO_ACTION_TYPE(data);
 
 	if(mpd_info.msi.connected) {
-			if(!mpd_check_connected(mpd_info.obj))
-				mpd_connect(mpd_info.obj);
+	    if(!mpd_check_connected(mpd_info.obj)) {
+		if(mpd_connect(mpd_info.obj) != MPD_OK) {
+		    msi_clear(&mpd_info);
+		    mpd_info.msi.connected = FALSE;
+		}
+		else {
+		    msi_fill(&mpd_info);
+		    mpd_info.msi.connected = TRUE;
+		}
+	    }
 	}
 
 	if((what<NUM_ACTIONS) && (what>0)) {

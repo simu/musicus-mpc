@@ -131,8 +131,20 @@ static gboolean show_musicus_window(void) {
 		gtk_widget_show(MpdWin.win);
 	}
 
-	if(mpd_info.msi.connected)
-		mpd_gui_show_mpd_elements();
+	if(mpd_info.msi.connected) {
+		if(!mpd_check_connected(mpd_info.obj)) {
+			if(mpd_connect(mpd_info.obj) != MPD_OK) {
+				mpd_info.msi.connected =  FALSE;
+				mpd_gui_hide_mpd_elements();
+			}
+			else {
+				mpd_gui_show_mpd_elements();
+			}
+		}
+		else {
+			mpd_gui_show_mpd_elements();
+		}
+	}
 	else
 		mpd_gui_hide_mpd_elements();
 

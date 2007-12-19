@@ -23,6 +23,22 @@
  * along with Musicus.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
 
+/**
+ * \mainpage Musicus MPD client 
+ *
+ * Don't miss to check the project's main page at http://musicus-mpc.berlios.de
+ *
+ * Musicus MPD client (musicus-mpc) is a client for the 
+ * music player daemon MPD (<a href="http://musicpd.org">MPD homepage</a>)
+ * It contains two executables. <br>
+ * The first is an applet for the GNOME panel. 
+ * The other is a standalone version of the Playlist/Media Browser component
+ * of the applet.
+ *
+ * The project is currently hosted on berliOS. Visit the project overview
+ * page at https://developer.berlios.de/projects/musicus-mpc/
+ */
+
 #ifndef __definitions_h
 #define __definitions_h
 
@@ -40,6 +56,7 @@
 
 #define AUTHORS "Simon Gerber <simugerber@student.ethz.ch>"
 #define DOCUMENTERS "Simon Gerber <simugerber@student.ethz.ch>"
+#define LOGO "musicus-mpc"
 
 /**
  * if this variable is set to 1, debug output is generated

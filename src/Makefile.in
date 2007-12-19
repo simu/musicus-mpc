@@ -1,18 +1,16 @@
 # src/Makefile
 
-CC=gcc
+CC=?cc
 CFLAGS=-Wall -ggdb
 
-PKG_CONFIG_EXE=/usr/bin/pkg-config
+LIBMPD_CFLAGS=?libmpd_cflags
+LIBMPD_LIBS=?libmpd_libs
 
-LIBMPD_CFLAGS=`${PKG_CONFIG_EXE} --cflags libmpd`
-LIBMPD_LIBS=`${PKG_CONFIG_EXE} --libs libmpd`
+GLIB_CFLAGS=?glib_cflags
+GLIB_LIBS=?glib_libs
 
-GLIB_CFLAGS=`${PKG_CONFIG_EXE} --cflags glib-2.0`
-GLIB_LIBS=`${PKG_CONFIG_EXE} --libs glib-2.0`
-
-GTK_CFLAGS=`${PKG_CONFIG_EXE} --cflags gtk+-2.0`
-GTK_LIBS=`${PKG_CONFIG_EXE} --libs gtk+-2.0`
+GTK_CFLAGS=?gtk_cflags
+GTK_LIBS=?gtk_libs
 
 FULL_CFLAGS=$(CFLAGS) $(GTK_CFLAGS) $(LIBMPD_CFLAGS)
 FULL_LIBS=$(GTK_LIBS) $(LIBMPD_LIBS)

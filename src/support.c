@@ -86,6 +86,11 @@ GtkTreeStore *pl_create_tree_store(MpdPlContainer *plc) {
     return tree_store;
 }
 
+GtkTreeStore *pl_empty_tree_store(void) {
+    GtkTreeStore *tree_store = gtk_tree_store_new(N_COLUMNS,G_TYPE_STRING,G_TYPE_INT,G_TYPE_BOOLEAN,G_TYPE_STRING,G_TYPE_STRING,G_TYPE_STRING,G_TYPE_INT,G_TYPE_STRING);
+    return tree_store;
+}
+
 GtkListStore *pl_create_list_store(MpdPlContainer *list) {
     GtkListStore *list_store = gtk_list_store_new(N_COLUMNS,G_TYPE_STRING,G_TYPE_INT,G_TYPE_BOOLEAN,G_TYPE_STRING,G_TYPE_STRING,G_TYPE_STRING,G_TYPE_INT,G_TYPE_STRING);
     GtkTreeIter iter;
@@ -324,8 +329,15 @@ gboolean update_info(gpointer data) {
 		}
 
 		/* update MpdObj status */
-		if(!mpd_check_connected(mpd_info.obj))
-			mpd_connect(mpd_info.obj);
+		if(!mpd_check_connected(mpd_info.obj)) {
+			if(mpd_connect(mpd_info.obj)!=MPD_OK) {
+			    msi_clear(&mpd_info);
+			    mpd_info.msi.connected = FALSE;
+			    return FALSE;   
+			}
+			msi_fill(&mpd_info);
+			mpd_info.msi.connected = TRUE;
+		}
 		mpd_status_update(mpd_info.obj);
 		return ((mpd_info.update_interval != (int)data) ? FALSE : TRUE);
     }

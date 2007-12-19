@@ -61,6 +61,8 @@ int main(int argc, char *argv[]) {
     if(mpd_info.auto_connect) {
         if(mpd_connect(mpd_info.obj)==MPD_OK)
             mpd_info.msi.connected = TRUE;
+	else
+	    mpd_info.msi.connected = FALSE;
     }
 
     mpd_play_state_update(mpd_info.obj);
@@ -84,12 +86,12 @@ int main(int argc, char *argv[]) {
 
     gtk_widget_show_all(mpd_win);
 
+    MpdWin.window_creation_finished = 1;
+
     if(mpd_info.msi.connected)
         mpd_gui_show_mpd_elements();
     else
         mpd_gui_hide_mpd_elements();
-
-    MpdWin.window_creation_finished = 1;
 
     gtk_main();
 

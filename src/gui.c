@@ -393,7 +393,6 @@ void open_about_dialog(GtkWidget *widget, gpointer data) {
 	/* gchar dir[512],*img;
 	get_data_dir(dir, 512, FALSE);
 	snprintf(img, strlen(dir)+22, "%s/data/gnome-mpd-applet", dir); */
-	const gchar *img_c = "gnome-mpd-applet";
 
 	gtk_show_about_dialog (NULL,
 #ifdef APPLET
@@ -403,13 +402,13 @@ void open_about_dialog(GtkWidget *widget, gpointer data) {
 #endif
 		"version",	VERSION,
 		"comments",	"Musicus is a client for the Music Player Daemon (http://www.musicpd.org).\n" \
-		"Visit http://musicus-mpc." \
+		"Visit http://musicus-mpc.berlios.org\n" \
 		"compiled on " __DATE__ " " __TIME__,
 		"copyright",	"\xC2\xA9 2006, 2007 S. Gerber",
 		"authors",	authors,
 		"documenters",	documenters,
 		"translator-credits",	"translator-credits",
-		"logo-icon-name",	img_c,
+		"logo-icon-name",	LOGO,
 		NULL);
 	return;
 }
@@ -515,6 +514,7 @@ void mpd_gui_show_mpd_elements(void) {
 void mpd_gui_hide_mpd_elements(void) {
 	gtk_widget_hide(mpdElements);
 	gtk_widget_show(notConnectedMsg);
+	menu_entries_update(0);
 	return;
 }
 
@@ -556,9 +556,15 @@ static void playlist_update_tree_cb(GtkWidget *widget, gpointer data) {
 }
 
 static void mpd_connect_cb(GtkWidget *widget, gpointer data) {
-    if(mpd_connect(mpd_info.obj)) {
+    if((mpd_connect(mpd_info.obj))==MPD_OK) {
         msi_fill(&mpd_info);
         mpd_info.msi.connected = TRUE;
+	mpd_gui_show_mpd_elements();
+    }
+    else {
+	msi_clear(&mpd_info);
+	mpd_info.msi.connected = FALSE;
+	mpd_gui_hide_mpd_elements();
     }
     return;
 }
@@ -567,6 +573,7 @@ static void mpd_disconnect_cb(GtkWidget *widget, gpointer data) {
     mpd_disconnect(mpd_info.obj);
     msi_clear(&mpd_info);
     mpd_info.msi.connected = FALSE;
+    mpd_gui_hide_mpd_elements();
     return;
 }
 
@@ -614,12 +621,20 @@ static void menu_entries_update(int play_state) {
 static void mpd_mrl_add_cb(GtkWidget *widget, gpointer data) {
     GtkEntry *e = GTK_ENTRY(widget);
     const gchar *etext = gtk_entry_get_text(e);
-    if(mpd_info.auto_connect) {
-            if(!mpd_check_connected(mpd_info.obj))
-                mpd_connect(mpd_info.obj);
+    if(mpd_info.msi.connected) {
+            if(!mpd_check_connected(mpd_info.obj)) {
+                if(mpd_connect(mpd_info.obj) != MPD_OK) {
+		    mpd_info.msi.connected = FALSE;
+		    return;
+		}
+		else {
+		    mpd_info.msi.connected = TRUE;
+		}
+	    }
             mpd_mrl_add(mpd_info.obj, etext);
     }
     gtk_widget_destroy(GTK_WIDGET(data));
+    return;
 }
 
 /* allows to react dynamically to mpd status changes

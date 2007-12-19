@@ -86,7 +86,6 @@ static void about_cb(BonoboUIComponent *uic, gpointer data, const gchar *verbnam
 		NULL
 	};
 
-	const gchar *img_c = "musicus-applet";
 	gtk_show_about_dialog(NULL,
 		"name",	"Musicus MPD client",
 		"version", VERSION,
@@ -95,7 +94,7 @@ static void about_cb(BonoboUIComponent *uic, gpointer data, const gchar *verbnam
 		"authors", authors,
 		"documenters", documenters,
 		"translator-credits", "translator-credits",
-		"logo-icon-name", img_c,
+		"logo-icon-name", LOGO,
 		NULL
 	);
 	return;
@@ -151,6 +150,8 @@ static gboolean musicus_applet_fill (PanelApplet *applet, const gchar *iid, gpoi
 	if(mpd_info.auto_connect) {
 		if(mpd_connect(mpd_info.obj) == MPD_OK)
 			mpd_info.msi.connected = TRUE;
+		else
+			mpd_info.msi.connected = FALSE;
 	}
 
 	musicus_applet_new(&musicus_applet);
