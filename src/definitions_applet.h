@@ -50,7 +50,7 @@ gchar ap_text[BUF_LEN];
 typedef struct MusicusApplet_ {
 	PanelApplet *applet;
 	GtkWidget *label;
-	GtkWidget *tt_label;
+	GtkTooltips *tooltips;
 	gboolean show_text;
 } MusicusApplet;
 

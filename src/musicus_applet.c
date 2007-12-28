@@ -70,20 +70,21 @@ static void musicus_applet_init(MusicusApplet *ma) {
 }
 
 static gboolean update_tooltip(gpointer data) {
-	/* gtk_tooltips_set_tip(musicus_applet.tooltips, GTK_WIDGET(musicus_applet.applet), tt_text, NULL); */
+	//gtk_tooltips_set_tip(musicus_applet.tooltips, GTK_WIDGET(musicus_applet.applet), tt_text, NULL);
 	/* now using new GtkTooltip instead of GtkTooltips */
-	//gtk_widget_set_tooltip_text(GTK_WIDGET(musicus_applet.applet), tt_text);
-	gtk_label_set_text(GTK_LABEL(musicus_applet.tt_label),tt_text);
+	gtk_widget_set_tooltip_text(GTK_WIDGET(musicus_applet.applet), tt_text);
 	/* update applet text */
 	gtk_label_set_text(GTK_LABEL(musicus_applet.label), ap_text);
 	return ((mpd_info.update_interval != (int)data) ? FALSE : TRUE);
 }
 
+#if 0
 static gboolean tooltip_cb(GtkWidget *widget, gint x, gint y, gboolean keyboard_mode, GtkTooltip *tooltip, gpointer user_data) {
 	gtk_label_set_text(GTK_LABEL(musicus_applet.tt_label), tt_text);
 
 	return TRUE;
 }
+#endif
 
 static void about_cb(BonoboUIComponent *uic, gpointer data, const gchar *verbname) {
 	static const gchar *authors[] = {
@@ -128,8 +129,8 @@ static void applet_text_cb(BonoboUIComponent *uic, gpointer data, const gchar *v
 static gboolean musicus_applet_fill (PanelApplet *applet, const gchar *iid, gpointer data) {
 
 	GtkWidget *event_box;
-	GtkWidget *tt_win;
-	GtkWidget *tt_label;
+	/* GtkWidget *tt_win;
+	GtkWidget *tt_label; */
 
 	gchar file_path[100];
 	gchar datadir[512], data_dir[512];
@@ -189,8 +190,8 @@ static gboolean musicus_applet_fill (PanelApplet *applet, const gchar *iid, gpoi
 	panel_applet_setup_menu_from_file(applet, data_dir, SHARE_DIR "/musicus_applet/GNOME_MusicusApplet.xml", NULL, musicus_applet_menu_verbs, NULL);
 
 	/* tooltips */
-	//gtk_widget_set_tooltip_text(GTK_WIDGET(applet), "Musicus MPD Client");
-	gtk_widget_set_has_tooltip(GTK_WIDGET(applet), TRUE);
+	gtk_widget_set_tooltip_text(GTK_WIDGET(applet), "Musicus MPD Client");
+	/* gtk_widget_set_has_tooltip(GTK_WIDGET(applet), TRUE);
 	g_signal_connect(G_OBJECT(applet), "query-tooltip",
 			 G_CALLBACK(tooltip_cb), NULL);
 	tt_label = gtk_label_new("Musicus MPD client");
@@ -198,7 +199,7 @@ static gboolean musicus_applet_fill (PanelApplet *applet, const gchar *iid, gpoi
 	gtk_window_set_default_size(GTK_WINDOW(tt_win), -1, -1);
 	gtk_container_add(GTK_CONTAINER(tt_win), tt_label);
 	gtk_widget_set_tooltip_window(GTK_WIDGET(applet), GTK_WINDOW(tt_win));
-	musicus_applet.tt_label = tt_label;
+	musicus_applet.tt_label = tt_label; */
 	
 	/* periodic funcs */
 	mpd_info.update_routines = NULL;
