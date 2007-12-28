@@ -122,6 +122,7 @@ static gboolean show_musicus_window(void) {
 						 G_CALLBACK(hide_musicus_win), NULL);
 		g_signal_connect(G_OBJECT(MpdWin.win), "delete_event",
 						 G_CALLBACK(hide_musicus_win), NULL);
+
 		gtk_widget_show_all(MpdWin.win);
 	}
 	/* restore the window */
@@ -130,6 +131,8 @@ static gboolean show_musicus_window(void) {
 			gtk_window_parse_geometry(GTK_WINDOW(MpdWin.win), MpdWin.characteristics.geom);
 		gtk_widget_show(MpdWin.win);
 	}
+
+	MpdWin.window_creation_finished = 1;
 
 	if(mpd_info.msi.connected) {
 		if(!mpd_check_connected(mpd_info.obj)) {
@@ -148,7 +151,6 @@ static gboolean show_musicus_window(void) {
 	else
 		mpd_gui_hide_mpd_elements();
 
-	MpdWin.window_creation_finished = 1;
 
 	return TRUE;
 }

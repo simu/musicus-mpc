@@ -556,9 +556,20 @@ static void playlist_update_tree_cb(GtkWidget *widget, gpointer data) {
 }
 
 static void mpd_connect_cb(GtkWidget *widget, gpointer data) {
+
+    GList *tmp;
+
     if((mpd_connect(mpd_info.obj))==MPD_OK) {
         msi_fill(&mpd_info);
         mpd_info.msi.connected = TRUE;
+	tmp = mpd_info.period_funcs;
+	for(tmp=g_list_first(tmp);tmp!=NULL;tmp=g_list_next(tmp)) {
+	    g_timeout_add(500, (GSourceFunc)tmp->data, (gpointer)mpd_info.update_interval);
+	}
+	tmp=mpd_info.update_routines;
+	for(tmp=g_list_first(tmp);tmp!=NULL;tmp=g_list_next(tmp)) {
+	    g_timeout_add(mpd_info.update_interval, (GSourceFunc)tmp->data, (gpointer)mpd_info.update_interval);
+	}
 	mpd_gui_show_mpd_elements();
     }
     else {
