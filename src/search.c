@@ -156,7 +156,11 @@ static void mpd_search(GtkWidget *widget, gpointer data) {
 		msi_fill(&mpd_info);
 		mpd_info.msi.connected = TRUE;
 	}
-	result = mpd_database_find(mpd_info.obj, search_type, search_string, TRUE);
+	/*
+	 * Last argument: TRUE -> only exact matches 
+	 *		  FALSE -> more matches 
+	 */
+	result = mpd_database_find(mpd_info.obj, search_type, search_string, FALSE);
 	/* Iterate through the found songs, using
 	 * the function mpd_data_get_next_keep(md), which
 	 * calls mpd_data_get_next_real(md,FALSE) which
