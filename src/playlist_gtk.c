@@ -182,6 +182,11 @@ void mpd_mrl_add(MpdObj *obj, const gchar *mrl) {
     return;
 }
 
+/* add playlist fro mfile to the current playlist */
+void mpd_pl_add_from_file(MpdObj *obj, const gchar *path) {
+    mpd_playlist_add(obj, (gchar *)path);
+}
+
 /* adds found songs to the playlist */
 void mpd_add_song_list(GtkWidget *widget, gpointer data) {
 
