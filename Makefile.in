@@ -9,7 +9,7 @@ SHARE_DIR=/usr/share/gnome-applets
 
 VERSION=0.1b
 
-.PHONY: clean install install_local dist doxy GNOME_MusicusApplet.server uninstall
+.PHONY: clean install local_install dist doxy GNOME_MusicusApplet.server uninstall
 
 #export all variables
 export
