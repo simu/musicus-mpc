@@ -87,7 +87,7 @@ static gboolean read_directory_to_tree_store(char *dirname, char *parentdir) {
 			case MPD_DATA_TYPE_PLAYLIST:
 				snprintf(identifier, 256, "[p] %s", tmp->playlist);
 				gtk_tree_store_set(media_database,&iter,M_COLUMN_IDENTIFIER, identifier,
-											   M_COLUMN_FILE, tmp->playlist->file, -1);
+											   M_COLUMN_FILE, tmp->playlist, -1);
 				break;
 			case MPD_DATA_TYPE_SONG:
 				snprintf(identifier, 256, "[s] %s - %s", tmp->song->artist, tmp->song->title);
@@ -302,7 +302,7 @@ void media_browser_reread() {
 	if(g_signal_handler_is_connected(G_OBJECT(mb_TreeView), row_activated_cb_id))
 		g_signal_handler_disconnect(G_OBJECT(mb_TreeView), row_activated_cb_id);
 	row_activated_cb_id = g_signal_connect(G_OBJECT(mb_TreeView), "row-activated",
-					       G_CALLBACK(media_browser_row_activated_cb), folder);
+										G_CALLBACK(media_browser_row_activated_cb), folder);
 
 	return;
 }

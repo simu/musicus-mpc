@@ -59,18 +59,11 @@ void playlist_update_tree(void);
 void pl_del_songs(GtkWidget *widget, gpointer data);
 
 /**
- * Add media resource locator to playlist (e.g. web stream)
- * \param obj the MpdObj
- * \param mrl the media resource locator
+ * Add media source locator to playlist (e.g. web stream)
+ * \param widget the widget from which the function was called
+ * \param data user data
  */
  void mpd_mrl_add(MpdObj *obj, const gchar *mrl);
-
-/**
- * Add a playlist from a stored playlist file
- * \param obj the MpdObj
- * \param path the path to the playlist file
- */
-void mpd_pl_add_from_file(MpdObj *obj, const gchar *path) {
 
 /**
  * Adds a song list to the playlist
