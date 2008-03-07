@@ -59,51 +59,53 @@ GtkWidget *nav_ButtonBox;
  * @return TRUE if no errors occured
  */
 static gboolean read_directory_to_tree_store(char *dirname, char *parentdir) {
-	/*< require */
-	g_return_val_if_fail (dirname != NULL, FALSE);
-	g_return_val_if_fail (parentdir != NULL, FALSE);
-	/*> */
-	/* GtkTreeStore *store = gtk_tree_store_new(M_COLUMNS, G_TYPE_STRING, G_TYPE_STRING); */
-	media_database = gtk_tree_store_new(M_COLUMNS, G_TYPE_STRING, G_TYPE_STRING);
-	GtkTreeIter iter;
-	char identifier[256] = { "" };
-	MpdData *mpd_data_dir = mpd_database_get_directory(mpd_info.obj, dirname);
-	MpdData *tmp = mpd_data_dir;
-	/* add an upwards node if not root directory */
-	if(parentdir[0]!=0) {
-		gtk_tree_store_append(media_database,&iter, NULL);
-		snprintf(identifier,256,"[d] ..");
-		gtk_tree_store_set(media_database,&iter,M_COLUMN_IDENTIFIER,identifier,
-												M_COLUMN_FILE,parentdir,-1);
+/*< require */
+    g_return_val_if_fail (dirname != NULL, FALSE);
+    g_return_val_if_fail (parentdir != NULL, FALSE);
+/*> */
+
+    GtkTreeIter iter;
+    char identifier[256] = { "" };
+
+    media_database = gtk_tree_store_new(M_COLUMNS, G_TYPE_STRING, G_TYPE_STRING);
+    MpdData *mpd_data_dir = mpd_database_get_directory(mpd_info.obj, dirname);
+    MpdData *tmp = mpd_data_dir;
+
+    /* add an upwards node if not root directory */
+    if(parentdir[0]!=0) {
+	gtk_tree_store_append(media_database,&iter, NULL);
+	snprintf(identifier,256,"[d] ..");
+	gtk_tree_store_set(media_database,&iter,M_COLUMN_IDENTIFIER,identifier,
+			   M_COLUMN_FILE,parentdir,-1);
+    }
+    for(tmp=mpd_data_dir;tmp!=NULL;tmp=mpd_data_get_next(tmp)) {
+	gtk_tree_store_append(media_database, &iter, NULL);
+	switch(tmp->type) {
+	    case MPD_DATA_TYPE_DIRECTORY:
+		snprintf(identifier, 256, "[d] %s", tmp->directory);
+		gtk_tree_store_set(media_database,&iter,M_COLUMN_IDENTIFIER, identifier,
+		M_COLUMN_FILE, tmp->directory, -1);
+	    break;
+	    case MPD_DATA_TYPE_PLAYLIST:
+		snprintf(identifier, 256, "[p] %s", tmp->playlist);
+		gtk_tree_store_set(media_database,&iter,M_COLUMN_IDENTIFIER, identifier,
+		M_COLUMN_FILE, tmp->playlist, -1);
+	    break;
+	    case MPD_DATA_TYPE_SONG:
+		snprintf(identifier, 256, "[s] %s - %s", tmp->song->artist, tmp->song->title);
+		gtk_tree_store_set(media_database,&iter,M_COLUMN_IDENTIFIER, identifier,
+				   M_COLUMN_FILE, tmp->song->file, -1);
+	    break;
+	    default: fprintf(err_file, "%s(): something bad happened\n", __FUNCTION__);
+		     g_assert_not_reached();
 	}
-	for(tmp=mpd_data_dir;tmp!=NULL;tmp=mpd_data_get_next(tmp)) {
-		gtk_tree_store_append(media_database, &iter, NULL);
-		switch(tmp->type) {
-			case MPD_DATA_TYPE_DIRECTORY:
-				snprintf(identifier, 256, "[d] %s", tmp->directory);
-				gtk_tree_store_set(media_database,&iter,M_COLUMN_IDENTIFIER, identifier,
-											   M_COLUMN_FILE, tmp->directory, -1);
-				break;
-			case MPD_DATA_TYPE_PLAYLIST:
-				snprintf(identifier, 256, "[p] %s", tmp->playlist);
-				gtk_tree_store_set(media_database,&iter,M_COLUMN_IDENTIFIER, identifier,
-											   M_COLUMN_FILE, tmp->playlist, -1);
-				break;
-			case MPD_DATA_TYPE_SONG:
-				snprintf(identifier, 256, "[s] %s - %s", tmp->song->artist, tmp->song->title);
-				gtk_tree_store_set(media_database,&iter,M_COLUMN_IDENTIFIER, identifier,
-											   M_COLUMN_FILE, tmp->song->file, -1);
-				break;
-			default: fprintf(err_file, "%s(): something bad happened\n", __FUNCTION__);
-					 g_assert_not_reached();
-		}
-	}
-	if(mpd_check_error(mpd_info.obj)) {
-		return FALSE;
-	}
-	else {
-		return TRUE;
-	}
+    }
+    if(mpd_check_error(mpd_info.obj)) {
+	return FALSE;
+    }
+    else {
+	return TRUE;
+    }
 }
 
 /**
