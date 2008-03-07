@@ -176,7 +176,11 @@ void pl_del_songs(GtkWidget *widget, gpointer data) {
 	return;
 }
 
-/* add media resource locator to playlist */
+/**
+ * Add media resource locator to playlist (e.g. web stream
+ * \param widget the widget from which the function was called
+ * \param data user data
+ */
 void mpd_mrl_add(MpdObj *obj, const gchar *mrl) {
     mpd_playlist_add(obj, (gchar *)mrl);
     return;
@@ -185,13 +189,13 @@ void mpd_mrl_add(MpdObj *obj, const gchar *mrl) {
 /* adds found songs to the playlist */
 void mpd_add_song_list(GtkWidget *widget, gpointer data) {
 
-	GList *argument_list = (GList *)data;
-	GList *song_list = NULL;
+    GList *argument_list = (GList *)data;
+    GList *song_list = NULL;
     GtkTreeIter iter;
-	int list_length = 0, i;
-	GtkTreeSelection *selection;
-	GtkTreeModel *model;
-	GList *selected_rows;
+    int list_length = 0, i;
+    GtkTreeSelection *selection;
+    GtkTreeModel *model;
+    GList *selected_rows;
     gchar *file_name;
 
     if(debug) {
