@@ -32,6 +32,7 @@
 /************** local functions **************/
 static void pl_row_activated(GtkTreeView *tv, GtkTreePath *path, GtkTreeViewColumn *column, gpointer data);
 static void pl_key_pressed(GtkWidget *widget, GdkEventKey *key, gpointer data);
+static void pl_row_inserted(GtkTreeView *tv, GtkTreePath *path, GtkTreeIter *iter, gpointer data);
 
 /************** local variables **************/
 static GtkWidget *PlTreeView;
@@ -44,7 +45,6 @@ GtkWidget *init_pl_widget(void) {
     GtkWidget *pl_widget, *pl_tree_view, *scrolled_window;
     GtkTreeStore *pl_tree_store;
     GtkObject *h_adjustment, *v_adjustment;
-    GtkTreeModel *tree_model;
     GtkTreeSelection *tree_selection;
 
     MpdPlContainer *plc;
@@ -67,17 +67,20 @@ GtkWidget *init_pl_widget(void) {
 	mpd_pl_container_free(plc);
     }
     PlTreeStore = pl_tree_store;
+
     pl_tree_view = pl_create_tree_view(GTK_TREE_MODEL(pl_tree_store));
     gtk_tree_view_set_reorderable(GTK_TREE_VIEW(pl_tree_view), TRUE);
+    g_signal_connect(G_OBJECT(pl_tree_store), "row-inserted",
+		     G_CALLBACK(pl_row_inserted), NULL);
     PlTreeView = pl_tree_view;
-    tree_model = gtk_tree_view_get_model(GTK_TREE_VIEW(pl_tree_view));
     tree_selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(pl_tree_view));
     /* set up for double-click -> plays selected song */
     gtk_tree_selection_set_mode(tree_selection, GTK_SELECTION_MULTIPLE);
     g_signal_connect(G_OBJECT(pl_tree_view), "row-activated",
-				     G_CALLBACK(pl_row_activated), GTK_TREE_SELECTION(tree_selection));
+		     G_CALLBACK(pl_row_activated), GTK_TREE_SELECTION(tree_selection));
     g_signal_connect(G_OBJECT(pl_tree_view), "key-press-event",
-				     G_CALLBACK(pl_key_pressed), (gpointer)tree_selection);
+		     G_CALLBACK(pl_key_pressed), (gpointer)tree_selection);
+
 
     if (debug) {
 	fprintf(log_file, "[%s:%3i] %s(): before adding scrolled window\n", __FILE__, __LINE__, __FUNCTION__);
@@ -309,6 +312,24 @@ static void pl_row_activated(GtkTreeView *tv, GtkTreePath *path, GtkTreeViewColu
 static void pl_key_pressed(GtkWidget *widget, GdkEventKey *key, gpointer data) {
     if(key->keyval == GDK_Delete)
 	pl_del_songs(NULL, data);
+    return;
+}
+
+/* handle drag and drop in playlist */
+static void pl_row_inserted(GtkTreeView *tv, GtkTreePath *path, GtkTreeIter *iter, gpointer data) {
+    
+    gint pl_id;
+    GtkTreeModel *model;
+
+    pl_id = -32;
+
+    model = gtk_tree_view_get_model(tv);
+
+    gtk_tree_model_get(model, iter, COLUMN_PL_ID, &pl_id, -1);
+
+    fprintf(log_file, "[%s:%3i] %s(): path  = %s\n", __FILE__, __LINE__, __FUNCTION__, gtk_tree_path_to_string(path));
+    fprintf(log_file, "[%s:%3i] %s(): pl_id = %d\n", __FILE__, __LINE__, __FUNCTION__, pl_id);
+
     return;
 }
 
