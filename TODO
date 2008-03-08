@@ -17,6 +17,8 @@ OPEN:
         crash the whole applet/program
   (006) Command line flags for disabling fetching lyrics / verbosity
   (007) Don't block too long in fetch_lyrics
+  (008) Playlist reordering
+  (009) Change playlist display into list instead of tree
 
  DEBUG/LOG FACILITIES
   (030) ifdef all debug output, so it can be completely disabled at compile
