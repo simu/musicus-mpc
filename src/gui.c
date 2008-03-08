@@ -404,7 +404,7 @@ void open_about_dialog(GtkWidget *widget, gpointer data) {
 		"comments",	"Musicus is a client for the Music Player Daemon (http://www.musicpd.org).\n" \
 		"Visit http://musicus-mpc.berlios.org\n" \
 		"compiled on " __DATE__ " " __TIME__,
-		"copyright",	"\xC2\xA9 2006, 2007 S. Gerber",
+		"copyright",	"\xC2\xA9 2006 - 2008 S. Gerber",
 		"authors",	authors,
 		"documenters",	documenters,
 		"translator-credits",	"translator-credits",

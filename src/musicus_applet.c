@@ -7,7 +7,7 @@
  */
 
 /**********************************************************************
- * Copyright 2006, 2007 by Simon Gerber <simugerber@student.ethz.ch>
+ * Copyright 2006 - 2008 by Simon Gerber <simugerber@student.ethz.ch>
  *
  * This file is part of Musicus.
  * Musicus is free software: you can redistribute it and/or modify
@@ -100,7 +100,7 @@ static void about_cb(BonoboUIComponent *uic, gpointer data, const gchar *verbnam
 		"name",	"Musicus MPD client",
 		"version", VERSION,
 		"comments", "Musicus is a MPD client for the GNOME Panel.",
-		"copyright", "\xC2\xA9 2006, 2007 S. Gerber",
+		"copyright", "\xC2\xA9 2006 - 2008 S. Gerber",
 		"authors", authors,
 		"documenters", documenters,
 		"translator-credits", "translator-credits",

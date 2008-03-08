@@ -7,7 +7,7 @@
  */
 
 /**********************************************************************
- * Copyright 2006, 2007 by Simon Gerber <simugerber@student.ethz.ch>
+ * Copyright 2006 - 2008 by Simon Gerber <simugerber@student.ethz.ch>
  *
  * This file is part of Musicus.
  * Musicus is free software: you can redistribute it and/or modify

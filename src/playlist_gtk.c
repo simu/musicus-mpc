@@ -6,7 +6,7 @@
  */
 
 /**********************************************************************
- * Copyright 2006, 2007 by Simon Gerber <simugerber@student.ethz.ch>
+ * Copyright 2006 - 2008 by Simon Gerber <simugerber@student.ethz.ch>
  *
  * This file is part of Musicus.
  * Musicus is free software: you can redistribute it and/or modify
@@ -68,6 +68,7 @@ GtkWidget *init_pl_widget(void) {
 	}
 	PlTreeStore = pl_tree_store;
 	pl_tree_view = pl_create_tree_view(GTK_TREE_MODEL(pl_tree_store));
+	gtk_tree_view_set_reorderable(GTK_TREE_VIEW(pl_tree_view), TRUE);
 	PlTreeView = pl_tree_view;
 	tree_model = gtk_tree_view_get_model(GTK_TREE_VIEW(pl_tree_view));
 	tree_selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(pl_tree_view));
