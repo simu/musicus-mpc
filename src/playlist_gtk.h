@@ -38,7 +38,7 @@
 /**
  * PlTreeStore contains the TreeStore for the playlist
  */
-GtkTreeStore *PlTreeStore;
+GtkTreeStore *PlListStore;
 
 /**
  * Initializes a GtkWidget to display the playlist

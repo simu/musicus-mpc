@@ -91,6 +91,11 @@ GtkTreeStore *pl_empty_tree_store(void) {
     return tree_store;
 }
 
+GtkListStore *pl_empty_list_store(void) {
+    GtkListStore *list_store = gtk_list_store_new(N_COLUMNS,G_TYPE_STRING,G_TYPE_INT,G_TYPE_BOOLEAN,G_TYPE_STRING,G_TYPE_STRING,G_TYPE_STRING,G_TYPE_INT,G_TYPE_STRING);
+    return list_store;
+}
+
 GtkListStore *pl_create_list_store(MpdPlContainer *list) {
     GtkListStore *list_store = gtk_list_store_new(N_COLUMNS,G_TYPE_STRING,G_TYPE_INT,G_TYPE_BOOLEAN,G_TYPE_STRING,G_TYPE_STRING,G_TYPE_STRING,G_TYPE_INT,G_TYPE_STRING);
     GtkTreeIter iter;

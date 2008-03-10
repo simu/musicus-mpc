@@ -43,7 +43,7 @@ static GtkWidget *PlTreeView;
 GtkWidget *init_pl_widget(void) {
 
     GtkWidget *pl_widget, *pl_tree_view, *scrolled_window;
-    GtkTreeStore *pl_tree_store;
+    GtkListStore *pl_list_store;
     GtkObject *h_adjustment, *v_adjustment;
     GtkTreeSelection *tree_selection;
 
@@ -61,16 +61,16 @@ GtkWidget *init_pl_widget(void) {
 	fflush(log_file);
     }
     /* create the tree view with the mpd playlist and set appropriate global references */
-    if(plc == NULL) pl_tree_store = pl_empty_tree_store();
+    if(plc == NULL) pl_list_store = pl_empty_list_store();
     else {
-	pl_tree_store = pl_create_tree_store(plc);
+	pl_list_store = pl_create_list_store(plc);
 	mpd_pl_container_free(plc);
     }
-    PlTreeStore = pl_tree_store;
+    PlListStore = pl_list_store;
 
-    pl_tree_view = pl_create_tree_view(GTK_TREE_MODEL(pl_tree_store));
+    pl_tree_view = pl_create_tree_view(GTK_TREE_MODEL(pl_list_store));
     gtk_tree_view_set_reorderable(GTK_TREE_VIEW(pl_tree_view), TRUE);
-    g_signal_connect(G_OBJECT(pl_tree_store), "row-inserted",
+    g_signal_connect(G_OBJECT(pl_list_store), "row-inserted",
 		     G_CALLBACK(pl_row_inserted), NULL);
     PlTreeView = pl_tree_view;
     tree_selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(pl_tree_view));
@@ -119,16 +119,16 @@ void playlist_update_tree(void) {
     plc = mpd_get_pl();
 
     /* only do this if a playlist window exists... */
-    if((PlTreeStore != NULL) && (PlTreeView != NULL)) {
-	/* reset and refill PlTreeStore and PlTreeView */
-	gtk_tree_store_clear(PlTreeStore);
-	if(plc == NULL) PlTreeStore = pl_empty_tree_store();
+    if((PlListStore != NULL) && (PlTreeView != NULL)) {
+	/* reset and refill PlListStore and PlTreeView */
+	gtk_list_store_clear(PlListStore);
+	if(plc == NULL) PlListStore = pl_empty_tree_store();
 	else {
-	    PlTreeStore = pl_create_tree_store(plc);
+	    PlListStore = pl_create_list_store(plc);
 	    mpd_pl_container_free(plc);
 	}
 
-	gtk_tree_view_set_model(GTK_TREE_VIEW(PlTreeView), GTK_TREE_MODEL(PlTreeStore));
+	gtk_tree_view_set_model(GTK_TREE_VIEW(PlTreeView), GTK_TREE_MODEL(PlListStore));
     }
 
     /* revert debug state */
