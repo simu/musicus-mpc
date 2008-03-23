@@ -36,6 +36,8 @@ GType musicus_playlist_get_type(void);
 
 MusicusPlaylist *musicus_playlist_new();
 
+void musicus_playlist_append_song(MusicusPlaylist *pl, MusicusSong *song);
+
 GList *musicus_playlist_get_songs(MusicusPlaylist *pl);
 void musicus_playlist_set_songs(MusicusPlaylist *pl, GList *songs);
 

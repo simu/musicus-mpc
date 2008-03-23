@@ -25,6 +25,14 @@ MusicusPlaylist *musicus_playlist_new() {
     return MUSICUS_PLAYLIST (g_object_new (MUSICUS_PLAYLIST_TYPE, NULL));
 }
 
+/* append song */
+void musicus_playlist_append_song(MusicusPlaylist *pl, MusicusSong *song) {
+    if(pl->priv->dispose_has_run)
+	return;
+    pl->priv->songs = g_list_append (pl->priv->songs, song);
+    return;
+}
+
 /* get song list */
 GList *musicus_playlist_get_songs (MusicusPlaylist *pl) {
     if(pl->priv->dispose_has_run)
@@ -76,7 +84,7 @@ void musicus_playlist_build_view_from_songs(MusicusPlaylist *pl) {
 
     gtk_tree_view_set_model(GTK_TREE_VIEW(pl), GTK_TREE_MODEL(store));
 
-    for(i=0;i<2;++i) {
+    for(i=0;i<3;++i) {
 	if(i == 0)
 	    c = gtk_tree_view_column_new_with_attributes(
 		    col[i],
