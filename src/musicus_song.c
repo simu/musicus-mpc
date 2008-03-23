@@ -1,5 +1,5 @@
 /*
- * musicus_song.c - implementatiion
+ * musicus_song.c - implementation
  */
 
 #include "musicus_song.h"
@@ -17,10 +17,18 @@ static void musicus_song_init (GTypeInstance *instance, gpointer class);
 static void musicus_song_dispose (GObject *object);
 static void musicus_song_finalize (GObject *object);
 
+/* get song name for MusicusSong `song` */
 const gchar *musicus_song_get_song_name(MusicusSong *song) {
     if(song->priv->dispose_has_run)
 	return NULL;
     return song->priv->song_name->str;
+}
+
+/* set song name for MusicusSong `song` */
+void musicus_song_set_song_name(MusicusSong *song, const gchar *song_name) {
+    if(song->priv->dispose_has_run)
+	return;
+    g_string_printf(song->priv->song_name, "%s", song_name);
 }
 
 GType musicus_song_get_type(void) {

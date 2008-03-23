@@ -29,6 +29,7 @@ struct _MusicusSongClass {
 };
 
 const gchar *musicus_song_get_song_name(MusicusSong *song);
+void musicus_song_set_song_name(MusicusSong *song, const gchar *song_name);
 
 GType musicus_song_get_type(void);
 
