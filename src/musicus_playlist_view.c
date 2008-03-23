@@ -14,11 +14,46 @@ struct _MusicusPlaylistPrivate {
 static GObjectClass *parent_class = NULL;
 
 /* internal methods */
-static void musicus_playlist_class_init (MusicusPlaylistClass *klass);
+static void musicus_playlist_class_init (MusicusPlaylistClass *klass, gpointer class_data);
 static void musicus_playlist_init (GTypeInstance *instance, gpointer class);
 static void musicus_playlist_dispose (GObject *object);
 static void musicus_playlist_finalize (GObject *object);
 static void free_song (gpointer data, gpointer user_data);
+
+/* get a new MusicusPlaylist instance for the user */
+MusicusPlaylist *musicus_playlist_new() {
+    return MUSICUS_PLAYLIST (g_object_new (MUSICUS_PLAYLIST_TYPE, NULL));
+}
+
+/* get song list */
+GList *musicus_playlist_get_songs (MusicusPlaylist *pl) {
+    if(pl->priv->dispose_has_run)
+	return NULL;
+    return pl->priv->songs;
+}
+
+/* set song list */
+void musicus_playlist_set_songs (MusicusPlaylist *pl, GList *songs) {
+    if(pl->priv->dispose_has_run)
+	return;
+    pl->priv->songs = songs;
+    return;
+}
+
+/* get active id */
+gint musicus_playlist_get_active_id(MusicusPlaylist *pl) {
+    if(pl->priv->dispose_has_run)
+	return -2;
+    return pl->priv->active_id;
+}
+
+/* set active id */
+void musicus_playlist_set_active_id(MusicusPlaylist *pl, gint active_id) {
+    if(pl->priv->dispose_has_run)
+	return;
+    pl->priv->active_id = active_id;
+    return;
+}
 
 /* Get the GType for musicus playlist objects */
 GType musicus_playlist_get_type (void) {
@@ -28,14 +63,14 @@ GType musicus_playlist_get_type (void) {
 	    sizeof (MusicusPlaylistClass),
 	    NULL, /* base init */
 	    NULL, /* base finalize */
-	    NULL, /* class init */
+	    (GClassInitFunc)musicus_playlist_class_init, /* class init */
 	    NULL, /* class finalize */
 	    NULL, /* class data */
 	    sizeof (MusicusPlaylist),
 	    0,
-	    musicus_playlist_init, /* instance init */
+	    (GInstanceInitFunc)musicus_playlist_init, /* instance init */
 	};
-	type = g_type_register_static (G_TYPE_OBJECT, "MusicusPlaylistType",
+	type = g_type_register_static (GTK_TYPE_TREE_VIEW, "MusicusPlaylistType",
 				       &info, 0
 				      );
     }
@@ -43,7 +78,7 @@ GType musicus_playlist_get_type (void) {
 }
 
 /* Initialize MusicusPlaylistClass */
-static void musicus_playlist_class_init (MusicusPlaylistClass *klass) {
+static void musicus_playlist_class_init (MusicusPlaylistClass *klass, gpointer class_data) {
 
     GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
     
@@ -51,7 +86,6 @@ static void musicus_playlist_class_init (MusicusPlaylistClass *klass) {
     gobject_class->finalize = musicus_playlist_finalize;
 
     parent_class = g_type_class_peek_parent (klass);
-
 
     /* this initializes space for the private structure */
     g_type_class_add_private (klass, sizeof (MusicusPlaylistPrivate));
@@ -61,7 +95,7 @@ static void musicus_playlist_class_init (MusicusPlaylistClass *klass) {
 /* Initialize MusicusPlaylist instances */
 static void musicus_playlist_init (GTypeInstance *instance, gpointer class) {
     MusicusPlaylist *self = MUSICUS_PLAYLIST (instance);
-    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, MUSICUS_TYPE_PLAYLIST, MusicusPlaylistPrivate);
+    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, MUSICUS_PLAYLIST_TYPE, MusicusPlaylistPrivate);
     self->priv->songs = NULL;
     self->priv->active_id = -1;
     self->priv->dispose_has_run = FALSE;
