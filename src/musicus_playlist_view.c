@@ -68,7 +68,7 @@ void musicus_playlist_build_view_from_songs(MusicusPlaylist *pl) {
 	snprintf(id,5,"%02d", i++);
 	gtk_list_store_set(store, &iter, 0, is_active,
 					 1, id,
-					 2, MUSICUS_SONG(tmp->data)->song_name,
+					 2, musicus_song_get_song_name(MUSICUS_SONG(tmp->data)),
 					 -1
 			  );
 	tmp = tmp->next;

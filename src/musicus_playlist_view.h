@@ -8,6 +8,7 @@
 #define MUSICUS_PLAYLIST_H
 
 #include <gtk/gtk.h>
+#include "musicus_song.h"
 
 #define MUSICUS_PLAYLIST_TYPE (musicus_playlist_get_type())
 #define MUSICUS_PLAYLIST(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), MUSICUS_PLAYLIST_TYPE, MusicusPlaylist))
