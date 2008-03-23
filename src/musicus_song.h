@@ -22,11 +22,13 @@ struct _MusicusSong {
     GObject parent;
 
     MusicusSongPrivate *priv;
-}
+};
 
 struct _MusicusSongClass {
     GObjectClass parent;
-}
+};
+
+const gchar *musicus_song_get_song_name(MusicusSong *song);
 
 GType musicus_song_get_type(void);
 
