@@ -41,6 +41,11 @@ void musicus_song_set_song_name(MusicusSong *song, const gchar *song_name) {
     g_string_printf(song->priv->song_name, "%s", song_name);
 }
 
+void musicus_song_free (MusicusSong *song, gpointer user_data) {
+    musicus_song_dispose(G_OBJECT(song));
+    return;
+}
+
 GType musicus_song_get_type(void) {
     static GType type = 0;
     if (type == 0) {

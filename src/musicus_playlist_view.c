@@ -18,7 +18,6 @@ static void musicus_playlist_class_init (MusicusPlaylistClass *klass, gpointer c
 static void musicus_playlist_init (GTypeInstance *instance, gpointer class);
 static void musicus_playlist_dispose (GObject *object);
 static void musicus_playlist_finalize (GObject *object);
-static void free_song (gpointer data, gpointer user_data);
 
 /* get a new MusicusPlaylist instance for the user */
 MusicusPlaylist *musicus_playlist_new() {
@@ -194,7 +193,7 @@ static void musicus_playlist_dispose (GObject *object) {
     self->priv->dispose_has_run = TRUE;
 
     /* free song list */
-    g_list_foreach(self->priv->songs, (GFunc)free_song, NULL);
+    g_list_foreach(self->priv->songs, (GFunc)musicus_song_free, NULL);
     g_list_free(self->priv->songs);
 
     G_OBJECT_CLASS (parent_class)->dispose (object);
@@ -206,12 +205,6 @@ static void musicus_playlist_dispose (GObject *object) {
 static void musicus_playlist_finalize (GObject *object) {
 
     G_OBJECT_CLASS(parent_class)->finalize (object);
-}
-
-/* Free Playlist Song data */
-static void free_song (gpointer data, gpointer user_data) {
-    /* free song struct */
-    return;
 }
 
 /* vim:sts=4:shiftwidth=4
