@@ -17,6 +17,16 @@ static void musicus_song_init (GTypeInstance *instance, gpointer class);
 static void musicus_song_dispose (GObject *object);
 static void musicus_song_finalize (GObject *object);
 
+MusicusSong *musicus_song_new(void) {
+    return MUSICUS_SONG (g_object_new (MUSICUS_SONG_TYPE, NULL));
+}
+
+MusicusSong *musicus_song_new_with_name(const gchar *song_name) {
+    MusicusSong *new = musicus_song_new();
+    musicus_song_set_song_name(new, song_name);
+    return new;
+}
+
 /* get song name for MusicusSong `song` */
 const gchar *musicus_song_get_song_name(MusicusSong *song) {
     if(song->priv->dispose_has_run)

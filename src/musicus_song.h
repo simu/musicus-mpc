@@ -28,6 +28,9 @@ struct _MusicusSongClass {
     GObjectClass parent;
 };
 
+MusicusSong *musicus_song_new(void);
+MusicusSong *musicus_song_new_with_name(const gchar *song_name);
+
 const gchar *musicus_song_get_song_name(MusicusSong *song);
 void musicus_song_set_song_name(MusicusSong *song, const gchar *song_name);
 
