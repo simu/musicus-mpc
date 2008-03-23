@@ -43,16 +43,24 @@ void musicus_playlist_set_songs (MusicusPlaylist *pl, GList *songs) {
 /* build tree model from songs */
 void musicus_playlist_build_view_from_songs(MusicusPlaylist *pl) {
 
-    GtkListStore *store = gtk_list_store_new(3, G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_STRING);
+    GtkListStore *store;
     GtkTreeViewColumn *c;
     GtkTreeIter iter;
 
-    GList *tmp = pl->priv->songs;
+    GList *tmp;
     gint i = 0;
-    gint active_id = pl->priv->active_id;
+    gint active_id;
     gboolean is_active;
     gchar id[5];
     gchar *col[] = { "A", "ID", "Song" };
+
+    /* return if object is no longer valid */
+    if(pl->priv->dispose_has_run)
+	return;
+
+    store = gtk_list_store_new(3, G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_STRING);
+    tmp = pl->priv->songs;
+    active_id = pl->priv->active_id;
 
     while(tmp != NULL) {
 	gtk_list_store_append(store, &iter);
