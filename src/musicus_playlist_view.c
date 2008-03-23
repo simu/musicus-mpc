@@ -94,9 +94,16 @@ void musicus_playlist_update_view(MusicusPlaylist *pl) {
     if(pl->priv->dispose_has_run)
 	return;
 
-    store = gtk_list_store_new(3, G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_STRING);
+    store = GTK_LIST_STORE(gtk_tree_view_get_model (GTK_TREE_VIEW(pl)));
+    if(store == NULL)
+	store = gtk_list_store_new(3, G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_STRING);
     tmp = pl->priv->songs;
     active_id = pl->priv->active_id;
+
+    /* hacky but I don't see a more elegant solution right now
+     * TODO: research for gtk_list_store_append or something
+     */
+    gtk_list_store_clear (store);
 
     while(tmp != NULL) {
 	gtk_list_store_append(store, &iter);
