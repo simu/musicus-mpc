@@ -105,8 +105,6 @@ static void musicus_song_dispose (GObject *object) {
 
 static void musicus_song_finalize (GObject *object) {
 
-    MusicusSong *self = MUSICUS_SONG(object);
-
     G_OBJECT_CLASS(parent_class)->finalize (object);
 
     return;

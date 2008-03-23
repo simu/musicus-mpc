@@ -205,8 +205,6 @@ static void musicus_playlist_dispose (GObject *object) {
 /* Finalize a MusicusPlaylist instance */
 static void musicus_playlist_finalize (GObject *object) {
 
-    MusicusPlaylist *self = MUSICUS_PLAYLIST(object);
-
     G_OBJECT_CLASS(parent_class)->finalize (object);
 }
 
