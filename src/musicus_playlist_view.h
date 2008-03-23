@@ -47,6 +47,8 @@ void musicus_playlist_update_view(MusicusPlaylist *pl);
 gint musicus_playlist_get_active_id(MusicusPlaylist *pl);
 void musicus_playlist_set_active_id(MusicusPlaylist *pl, gint active_id);
 
+gboolean musicus_playlist_dump_data (MusicusPlaylist *pl);
+
 #endif
 
 /* vim:sts=4:shiftwidth=4

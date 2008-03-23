@@ -4,6 +4,7 @@
 
 #include "musicus_playlist.h"
 #include <stdlib.h>
+#include <glib/gprintf.h>
 
 struct _MusicusPlaylistPrivate {
     GList *songs;
@@ -217,6 +218,14 @@ static void musicus_playlist_dispose (GObject *object) {
 static void musicus_playlist_finalize (GObject *object) {
 
     G_OBJECT_CLASS(parent_class)->finalize (object);
+}
+
+gboolean musicus_playlist_dump_data (MusicusPlaylist *pl) {
+    g_printf("dispose_has_run = %s\n", pl->priv->dispose_has_run?"TRUE":"FALSE");
+    g_printf("active_id = %d\n", pl->priv->active_id);
+    g_printf("songs = %p\n", pl->priv->songs);
+    g_print("==================\n");
+    return TRUE;
 }
 
 void row_activated_cb (GtkTreeView *tv, GtkTreePath *path, GtkTreeViewColumn *c, gpointer data) {
