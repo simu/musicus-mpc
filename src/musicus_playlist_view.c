@@ -146,7 +146,6 @@ static void musicus_playlist_init (GTypeInstance *instance, gpointer class) {
     self->priv->songs = NULL;
     self->priv->active_id = -1;
     self->priv->dispose_has_run = FALSE;
-    self->priv->dispose_has_run = FALSE;
     return;
 }
 
