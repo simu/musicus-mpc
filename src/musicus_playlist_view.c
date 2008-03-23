@@ -40,6 +40,53 @@ void musicus_playlist_set_songs (MusicusPlaylist *pl, GList *songs) {
     return;
 }
 
+/* build tree model from songs */
+void musicus_playlist_build_view_from_songs(MusicusPlaylist *pl) {
+
+    GtkListStore *store = gtk_list_store_new(3, G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_STRING);
+    GtkTreeViewColumn *c;
+    GtkTreeIter iter;
+
+    GList *tmp = pl->priv->songs;
+    gint i = 0;
+    gint active_id = pl->priv->active_id;
+    gboolean is_active;
+    gchar id[5];
+    gchar *col[] = { "A", "ID", "Song" };
+
+    while(tmp != NULL) {
+	gtk_list_store_append(store, &iter);
+	is_active = (i == active_id) ? TRUE : FALSE;
+	snprintf(id,5,"%02d", i++);
+	gtk_list_store_set(store, &iter, 0, is_active,
+					 1, id,
+					 2, MUSICUS_SONG(tmp->data)->song_name,
+					 -1
+			  );
+	tmp = tmp->next;
+    }
+
+    gtk_tree_view_set_model(GTK_TREE_VIEW(pl), GTK_TREE_MODEL(store));
+
+    for(i=0;i<2;++i) {
+	if(i == 0)
+	    c = gtk_tree_view_column_new_with_attributes(
+		    col[i],
+		    gtk_cell_renderer_toggle_new(),
+		    "active", i,
+		    NULL);
+	else
+	    c = gtk_tree_view_column_new_with_attributes(
+		    col[i],
+		    gtk_cell_renderer_text_new(),
+		    "text", i,
+		    NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(pl), c);
+    }
+
+    return;
+}
+
 /* get active id */
 gint musicus_playlist_get_active_id(MusicusPlaylist *pl) {
     if(pl->priv->dispose_has_run)
