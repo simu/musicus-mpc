@@ -42,6 +42,7 @@ GList *musicus_playlist_get_songs(MusicusPlaylist *pl);
 void musicus_playlist_set_songs(MusicusPlaylist *pl, GList *songs);
 
 void musicus_playlist_build_view_from_songs(MusicusPlaylist *pl);
+void musicus_playlist_update_view(MusicusPlaylist *pl);
 
 gint musicus_playlist_get_active_id(MusicusPlaylist *pl);
 void musicus_playlist_set_active_id(MusicusPlaylist *pl, gint active_id);

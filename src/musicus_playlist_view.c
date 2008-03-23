@@ -48,21 +48,50 @@ void musicus_playlist_set_songs (MusicusPlaylist *pl, GList *songs) {
     return;
 }
 
-/* build tree model from songs */
+/* build tree view from songs */
 void musicus_playlist_build_view_from_songs(MusicusPlaylist *pl) {
 
-    GtkListStore *store;
     GtkTreeViewColumn *c;
-    GtkTreeIter iter;
+    gchar *col[] = { "A", "ID", "Song" };
+    gint i;
 
+    /* return if object is no longer valid */
+    if(pl->priv->dispose_has_run)
+	return;
+
+    musicus_playlist_update_view(pl);
+
+    for(i=0;i<3;++i) {
+	if(i == 0)
+	    c = gtk_tree_view_column_new_with_attributes(
+		    col[i],
+		    gtk_cell_renderer_toggle_new(),
+		    "active", i,
+		    NULL);
+	else
+	    c = gtk_tree_view_column_new_with_attributes(
+		    col[i],
+		    gtk_cell_renderer_text_new(),
+		    "text", i,
+		    NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(pl), c);
+    }
+
+    return;
+}
+
+/* update tree view */
+void musicus_playlist_update_view(MusicusPlaylist *pl) {
+
+    GtkListStore *store;
+    GtkTreeIter iter;
     GList *tmp;
     gint i = 0;
     gint active_id;
-    gboolean is_active;
     gchar id[5];
-    gchar *col[] = { "A", "ID", "Song" };
+    gboolean is_active;
 
-    /* return if object is no longer valid */
+    /* return if object no longer valid */
     if(pl->priv->dispose_has_run)
 	return;
 
@@ -84,22 +113,6 @@ void musicus_playlist_build_view_from_songs(MusicusPlaylist *pl) {
 
     gtk_tree_view_set_model(GTK_TREE_VIEW(pl), GTK_TREE_MODEL(store));
 
-    for(i=0;i<3;++i) {
-	if(i == 0)
-	    c = gtk_tree_view_column_new_with_attributes(
-		    col[i],
-		    gtk_cell_renderer_toggle_new(),
-		    "active", i,
-		    NULL);
-	else
-	    c = gtk_tree_view_column_new_with_attributes(
-		    col[i],
-		    gtk_cell_renderer_text_new(),
-		    "text", i,
-		    NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(pl), c);
-    }
-
     return;
 }
 
@@ -115,6 +128,8 @@ void musicus_playlist_set_active_id(MusicusPlaylist *pl, gint active_id) {
     if(pl->priv->dispose_has_run)
 	return;
     pl->priv->active_id = active_id;
+    /* update view */
+    musicus_playlist_update_view(pl);
     return;
 }
 
