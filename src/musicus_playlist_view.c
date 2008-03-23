@@ -3,6 +3,7 @@
  */
 
 #include "musicus_playlist.h"
+#include <stdlib.h>
 
 struct _MusicusPlaylistPrivate {
     GList *songs;
@@ -18,6 +19,7 @@ static void musicus_playlist_class_init (MusicusPlaylistClass *klass, gpointer c
 static void musicus_playlist_init (GTypeInstance *instance, gpointer class);
 static void musicus_playlist_dispose (GObject *object);
 static void musicus_playlist_finalize (GObject *object);
+void row_activated_cb (GtkTreeView *tv, GtkTreePath *path, GtkTreeViewColumn *c, gpointer data);
 
 /* get a new MusicusPlaylist instance for the user */
 MusicusPlaylist *musicus_playlist_new() {
@@ -75,6 +77,9 @@ void musicus_playlist_build_view_from_songs(MusicusPlaylist *pl) {
 		    NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(pl), c);
     }
+
+    g_signal_connect (G_OBJECT (pl), "row-activated",
+		      G_CALLBACK(row_activated_cb), NULL);
 
     return;
 }
@@ -212,6 +217,24 @@ static void musicus_playlist_dispose (GObject *object) {
 static void musicus_playlist_finalize (GObject *object) {
 
     G_OBJECT_CLASS(parent_class)->finalize (object);
+}
+
+void row_activated_cb (GtkTreeView *tv, GtkTreePath *path, GtkTreeViewColumn *c, gpointer data) {
+
+    GtkTreeModel *model;
+    GtkTreeIter iter;
+    gchar *id;
+    gint activated;
+
+    model = gtk_tree_view_get_model(tv);
+    gtk_tree_model_get_iter(model, &iter, path);
+    gtk_tree_model_get(model, &iter, 1, &id, -1);
+
+    activated = atoi(id);
+
+    musicus_playlist_set_active_id(MUSICUS_PLAYLIST(tv), activated);
+
+    return;
 }
 
 /* vim:sts=4:shiftwidth=4
