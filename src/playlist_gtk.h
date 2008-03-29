@@ -85,4 +85,3 @@ void mpd_add_directory_to_playlist(GtkWidget *widget, gpointer data);
 
 /* vim:sts=4:shiftwidth=4
  */
-
