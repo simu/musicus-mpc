@@ -1,12 +1,12 @@
 /*
- * musicus_playlist.c - playlist widget for musicus mpc: implementation
+ * musicus_playlist_view.c - playlist_view widget for musicus mpc: implementation
  */
 
-#include "musicus_playlist.h"
+#include "musicus_playlist_view.h"
 #include <stdlib.h>
 #include <glib/gprintf.h>
 
-struct _MusicusPlaylistPrivate {
+struct _MusicusPlaylistViewPrivate {
     GList *songs;
     gint active_id;
     /* for destruction purposes */
@@ -16,19 +16,19 @@ struct _MusicusPlaylistPrivate {
 static GObjectClass *parent_class = NULL;
 
 /* internal methods */
-static void musicus_playlist_class_init (MusicusPlaylistClass *klass, gpointer class_data);
-static void musicus_playlist_init (GTypeInstance *instance, gpointer class);
-static void musicus_playlist_dispose (GObject *object);
-static void musicus_playlist_finalize (GObject *object);
+static void musicus_playlist_view_class_init (MusicusPlaylistViewClass *klass, gpointer class_data);
+static void musicus_playlist_view_init (GTypeInstance *instance, gpointer class);
+static void musicus_playlist_view_dispose (GObject *object);
+static void musicus_playlist_view_finalize (GObject *object);
 void row_activated_cb (GtkTreeView *tv, GtkTreePath *path, GtkTreeViewColumn *c, gpointer data);
 
-/* get a new MusicusPlaylist instance for the user */
-MusicusPlaylist *musicus_playlist_new() {
-    return MUSICUS_PLAYLIST (g_object_new (MUSICUS_PLAYLIST_TYPE, NULL));
+/* get a new MusicusPlaylistView instance for the user */
+MusicusPlaylistView *musicus_playlist_view_new() {
+    return MUSICUS_PLAYLIST_VIEW (g_object_new (MUSICUS_PLAYLIST_VIEW_TYPE, NULL));
 }
 
 /* append song */
-void musicus_playlist_append_song(MusicusPlaylist *pl, MusicusSong *song) {
+void musicus_playlist_view_append_song(MusicusPlaylistView *pl, MusicusSong *song) {
     if(pl->priv->dispose_has_run)
 	return;
     pl->priv->songs = g_list_append (pl->priv->songs, song);
@@ -36,14 +36,14 @@ void musicus_playlist_append_song(MusicusPlaylist *pl, MusicusSong *song) {
 }
 
 /* get song list */
-GList *musicus_playlist_get_songs (MusicusPlaylist *pl) {
+GList *musicus_playlist_view_get_songs (MusicusPlaylistView *pl) {
     if(pl->priv->dispose_has_run)
 	return NULL;
     return pl->priv->songs;
 }
 
 /* set song list */
-void musicus_playlist_set_songs (MusicusPlaylist *pl, GList *songs) {
+void musicus_playlist_view_set_songs (MusicusPlaylistView *pl, GList *songs) {
     if(pl->priv->dispose_has_run)
 	return;
     pl->priv->songs = songs;
@@ -51,7 +51,7 @@ void musicus_playlist_set_songs (MusicusPlaylist *pl, GList *songs) {
 }
 
 /* build tree view from songs */
-void musicus_playlist_build_view_from_songs(MusicusPlaylist *pl) {
+void musicus_playlist_view_build_view_from_songs(MusicusPlaylistView *pl) {
 
     GtkTreeViewColumn *c;
     gchar *col[] = { "A", "ID", "Song" };
@@ -61,7 +61,7 @@ void musicus_playlist_build_view_from_songs(MusicusPlaylist *pl) {
     if(pl->priv->dispose_has_run)
 	return;
 
-    musicus_playlist_update_view(pl);
+    musicus_playlist_view_update_view(pl);
 
     for(i=0;i<3;++i) {
 	if(i == 0)
@@ -86,7 +86,7 @@ void musicus_playlist_build_view_from_songs(MusicusPlaylist *pl) {
 }
 
 /* update tree view */
-void musicus_playlist_update_view(MusicusPlaylist *pl) {
+void musicus_playlist_view_update_view(MusicusPlaylistView *pl) {
 
     GtkListStore *store;
     GtkTreeIter iter;
@@ -129,73 +129,73 @@ void musicus_playlist_update_view(MusicusPlaylist *pl) {
 }
 
 /* get active id */
-gint musicus_playlist_get_active_id(MusicusPlaylist *pl) {
+gint musicus_playlist_view_get_active_id(MusicusPlaylistView *pl) {
     if(pl->priv->dispose_has_run)
 	return -2;
     return pl->priv->active_id;
 }
 
 /* set active id */
-void musicus_playlist_set_active_id(MusicusPlaylist *pl, gint active_id) {
+void musicus_playlist_view_set_active_id(MusicusPlaylistView *pl, gint active_id) {
     if(pl->priv->dispose_has_run)
 	return;
     pl->priv->active_id = active_id;
     /* update view */
-    musicus_playlist_update_view(pl);
+    musicus_playlist_view_update_view(pl);
     return;
 }
 
-/* Get the GType for musicus playlist objects */
-GType musicus_playlist_get_type (void) {
+/* Get the GType for musicus playlist_view objects */
+GType musicus_playlist_view_get_type (void) {
     static GType type = 0;
     if (type == 0) {
 	static const GTypeInfo info = {
-	    sizeof (MusicusPlaylistClass),
+	    sizeof (MusicusPlaylistViewClass),
 	    NULL, /* base init */
 	    NULL, /* base finalize */
-	    (GClassInitFunc)musicus_playlist_class_init, /* class init */
+	    (GClassInitFunc)musicus_playlist_view_class_init, /* class init */
 	    NULL, /* class finalize */
 	    NULL, /* class data */
-	    sizeof (MusicusPlaylist),
+	    sizeof (MusicusPlaylistView),
 	    0,
-	    (GInstanceInitFunc)musicus_playlist_init, /* instance init */
+	    (GInstanceInitFunc)musicus_playlist_view_init, /* instance init */
 	};
-	type = g_type_register_static (GTK_TYPE_TREE_VIEW, "MusicusPlaylistType",
+	type = g_type_register_static (GTK_TYPE_TREE_VIEW, "MusicusPlaylistViewType",
 				       &info, 0
 				      );
     }
     return type;
 }
 
-/* Initialize MusicusPlaylistClass */
-static void musicus_playlist_class_init (MusicusPlaylistClass *klass, gpointer class_data) {
+/* Initialize MusicusPlaylistViewClass */
+static void musicus_playlist_view_class_init (MusicusPlaylistViewClass *klass, gpointer class_data) {
 
     GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
     
-    gobject_class->dispose = musicus_playlist_dispose;
-    gobject_class->finalize = musicus_playlist_finalize;
+    gobject_class->dispose = musicus_playlist_view_dispose;
+    gobject_class->finalize = musicus_playlist_view_finalize;
 
     parent_class = g_type_class_peek_parent (klass);
 
     /* this initializes space for the private structure */
-    g_type_class_add_private (klass, sizeof (MusicusPlaylistPrivate));
+    g_type_class_add_private (klass, sizeof (MusicusPlaylistViewPrivate));
     return;
 }
 
-/* Initialize MusicusPlaylist instances */
-static void musicus_playlist_init (GTypeInstance *instance, gpointer class) {
-    MusicusPlaylist *self = MUSICUS_PLAYLIST (instance);
-    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, MUSICUS_PLAYLIST_TYPE, MusicusPlaylistPrivate);
+/* Initialize MusicusPlaylistView instances */
+static void musicus_playlist_view_init (GTypeInstance *instance, gpointer class) {
+    MusicusPlaylistView *self = MUSICUS_PLAYLIST_VIEW (instance);
+    self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, MUSICUS_PLAYLIST_VIEW_TYPE, MusicusPlaylistViewPrivate);
     self->priv->songs = NULL;
     self->priv->active_id = -1;
     self->priv->dispose_has_run = FALSE;
     return;
 }
 
-/* Dispose of a MusicusPlaylist instance */
-static void musicus_playlist_dispose (GObject *object) {
+/* Dispose of a MusicusPlaylistView instance */
+static void musicus_playlist_view_dispose (GObject *object) {
 
-    MusicusPlaylist *self = MUSICUS_PLAYLIST(object);
+    MusicusPlaylistView *self = MUSICUS_PLAYLIST_VIEW(object);
 
     /* if dispose did run already, return */
     if(self->priv->dispose_has_run) {
@@ -214,13 +214,13 @@ static void musicus_playlist_dispose (GObject *object) {
     return;
 }
 
-/* Finalize a MusicusPlaylist instance */
-static void musicus_playlist_finalize (GObject *object) {
+/* Finalize a MusicusPlaylistView instance */
+static void musicus_playlist_view_finalize (GObject *object) {
 
     G_OBJECT_CLASS(parent_class)->finalize (object);
 }
 
-gboolean musicus_playlist_dump_data (MusicusPlaylist *pl) {
+gboolean musicus_playlist_view_dump_data (MusicusPlaylistView *pl) {
     g_printf("dispose_has_run = %s\n", pl->priv->dispose_has_run?"TRUE":"FALSE");
     g_printf("active_id = %d\n", pl->priv->active_id);
     g_printf("songs = %p\n", pl->priv->songs);
@@ -241,7 +241,7 @@ void row_activated_cb (GtkTreeView *tv, GtkTreePath *path, GtkTreeViewColumn *c,
 
     activated = atoi(id);
 
-    musicus_playlist_set_active_id(MUSICUS_PLAYLIST(tv), activated);
+    musicus_playlist_view_set_active_id(MUSICUS_PLAYLIST_VIEW(tv), activated);
 
     return;
 }

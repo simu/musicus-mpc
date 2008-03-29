@@ -18,8 +18,8 @@ FULL_BINARY_OPTS=$(FULL_CFLAGS) $(FULL_LIBS)
 
 BINARIES=musicus_applet
 
-HEADERS=definitions.h mpd.h colorcodes.h media_browser.h support.h playlist.h playlist_gtk.h gui.h search.h preferences.h mpd_action.h definitions_applet.h applet_support.h ../config.h
-COMMON_OBJS=mpd.a.o media_browser.a.o support.a.o playlist.a.o playlist_gtk.a.o gui.a.o search.a.o preferences.a.o mpd_action.a.o applet_support.o
+HEADERS=definitions.h mpd.h colorcodes.h media_browser.h support.h playlist.h playlist_gtk.h gui.h search.h preferences.h mpd_action.h definitions_applet.h applet_support.h musicus_playlist_view.h musicus_song.h ../config.h
+COMMON_OBJS=mpd.a.o media_browser.a.o support.a.o playlist.a.o playlist_gtk.a.o gui.a.o search.a.o preferences.a.o mpd_action.a.o applet_support.o musicus_playlist_view.a.o musicus_song.a.o
 ALL_OBJS=$(COMMON_OBJS) musicus_applet.o
 
 all: $(BINARIES)
@@ -50,6 +50,14 @@ preferences.a.o: preferences.c $(HEADERS)
 
 mpd_action.a.o: mpd_action.c $(HEADERS)
 	$(CC) -c $(CFLAGS) $(APPLET_CFLAGS) $(LIBMPD_CFLAGS) -o mpd_action.a.o mpd_action.c
+
+musicus_playlist_view.a.o: musicus_playlist_view.c $(HEADERS)
+	$(CC) -c $(CFLAGS) $(APPLET_CFLAGS) $(LIBMPD_CFLAGS) -o musicus_playlist_view.a.o musicus_playlist_view.c
+
+musicus_song.a.o: musicus_song.c $(HEADERS)
+	$(CC) -c $(CFLAGS) $(APPLET_CFLAGS) $(LIBMPD_CFLAGS) -o musicus_song.a.o musicus_song.c
+
+
 
 applet_support.o: applet_support.c $(HEADERS)
 	$(CC) -c $(CFLAGS) $(APPLET_CFLAGS) $(LIBMPD_CFLAGS) -o applet_support.o applet_support.c
