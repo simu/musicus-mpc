@@ -44,6 +44,7 @@ static void page_switched(GtkNotebook *notebook, GtkNotebookPage *page, guint pa
 
 static void applet_pl_cleanup_cb(GtkWidget *widget, gpointer data);
 static void playlist_update_tree_cb(GtkWidget *widget, gpointer data);
+static void mb_reread_cb(GtkWidget *widget, gpointer data);
 static void mpd_connect_cb(GtkWidget *widget, gpointer data);
 static void mpd_disconnect_cb(GtkWidget *widget, gpointer data);
 static void menu_entries_update(int play_state);
@@ -290,6 +291,9 @@ static GtkWidget *create_menubar(GFunc *quit_proc) {
 	menu_add_separator(GTK_CONTAINER(menu));
 	/* action: reload playlist */
 	menu_add_entry(GTK_CONTAINER(menu), "_Reload playlist", G_CALLBACK(playlist_update_tree_cb), NULL);
+
+	/* action reload media browser */
+	menu_add_entry(GTK_CONTAINER(menu), "Reload _Media Browser", G_CALLBACK(mb_reread_cb), NULL);
 
 	/* action: separator */
 	menu_add_separator(GTK_CONTAINER(menu));
@@ -555,6 +559,12 @@ static void playlist_update_tree_cb(GtkWidget *widget, gpointer data) {
     return;
 }
 
+static void mb_reread_cb(GtkWidget *widget, gpointer data) {
+    media_browser_reread();
+    return;
+}
+
+
 static void mpd_connect_cb(GtkWidget *widget, gpointer data) {
 
     GList *tmp;
@@ -677,6 +687,8 @@ void gui_mpd_status_changed_cb(MpdObj *obj, ChangedStatusType what, gpointer dat
     if (what&MPD_CST_DATABASE) { /* database has changed */
         fprintf(log_file, "mpd: database has changed\n");
         fflush(log_file);
+	/* reread media browser tree */
+	media_browser_reread();
     }
     if (what&MPD_CST_UPDATING) { /* database updating status has changed -- seems not to work correctly ...*/
         fprintf(log_file, "mpd: database updating status has changed\n");
