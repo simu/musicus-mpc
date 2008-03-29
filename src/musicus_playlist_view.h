@@ -1,8 +1,27 @@
-/*
- * musicus_playlist_view.h - playlist_view widget for musicus mpc: header
- *
- * Copyright ...
+/**
+ * \file musicus_playlist_view.h
+ * \author Simon Gerber
+ * \date 2008-03-23
+ * This file contains the definitions for a PlaylistView widget.
  */
+
+/**********************************************************************
+ * Copyright 2006 - 2008 by Simon Gerber <simugerber@student.ethz.ch>
+ *
+ * This file is part of Musicus.
+ * Musicus is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Musicus is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Musicus.  If not, see <http://www.gnu.org/licenses/>.
+ **********************************************************************/
 
 #ifndef MUSICUS_PLAYLIST_VIEW_H
 #define MUSICUS_PLAYLIST_VIEW_H
