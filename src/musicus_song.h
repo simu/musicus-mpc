@@ -84,8 +84,10 @@ typedef struct _MusicusSongPrivate MusicusSongPrivate;
  * Has none of those right now.
  */
 struct _MusicusSong {
+    /// reference to parent object.
     GObject parent;
 
+    /// private fields.
     MusicusSongPrivate *priv;
 };
 
@@ -93,6 +95,7 @@ struct _MusicusSong {
  * The class structure.
  */
 struct _MusicusSongClass {
+    /// parent's class.
     GObjectClass parent;
 };
 

@@ -25,8 +25,13 @@
 
 #include "musicus_song.h"
 
+/**
+ * Private structure for MusicusSong.
+ */
 struct _MusicusSongPrivate {
+    /// name of the song
     GString *song_name;
+    /// used to ensure that dispose doesn't run twice or that data is valid.
     gboolean dispose_has_run;
 };
 
