@@ -45,7 +45,7 @@ typedef struct _MpdPlContainer {
 } MpdPlContainer;
 
 /**
- * allocate memory for #list in MpdPlContainer
+ * allocate memory for `list` in MpdPlContainer
  * \param pl_length number of entries
  * \return handle to the newly allocated memory, appropriately casted
  */

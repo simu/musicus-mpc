@@ -181,9 +181,9 @@ void pl_del_songs(GtkWidget *widget, gpointer data) {
 }
 
 /**
- * Add media resource locator to playlist (e.g. web stream
- * \param widget the widget from which the function was called
- * \param data user data
+ * Add media resource locator to playlist (e.g. web stream)
+ * \param obj the MpdObj to add to.
+ * \param mrl the media resource locator.
  */
 void mpd_mrl_add(MpdObj *obj, const gchar *mrl) {
     mpd_playlist_add(obj, (gchar *)mrl);

@@ -58,7 +58,7 @@ mpd_Song *mpd_get_current_song(MpdObj *obj);
 /**
  * Gets the mpd_Connection from the supplied MpdObj
  * \param obj the MpdObj you want the connection from
- * \return the mpd_Connection associated with #obj
+ * \return the mpd_Connection associated with `obj`
  */
 mpd_Connection *mpd_object_get_connection(MpdObj *obj);
 
@@ -137,16 +137,15 @@ int mpd_get_current_title_string(char *title, int strlen);
  */
 int mpd_get_current_album_string(char *album, int strlen);
 /**
- * Get the track name from which current song comes or "n/a"
- * if no song is playing
- * \param *track a pointer to a char array of length strlen
- * \param strlen the length of the array to which album points
+ * Get the artist name from which current song comes or "n/a"
+ * if no artist tag for the current song.
+ * \param *artist a pointer to a char array of length strlen
+ * \param strlen the length of the array to which `artist` points
  * \return 0
  */
 int mpd_get_current_artist_string(char *artist, int strlen);
 /**
- * Get the track name of the current song or "n/a"
- * if no song is playing
+ * Gets the track tag of the current song.
  * \param *track a pointer to a char array of length strlen
  * \param strlen the length of the array to which track points
  * \return 0

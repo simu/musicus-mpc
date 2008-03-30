@@ -61,7 +61,7 @@ GtkListStore *pl_empty_list_store(void);
 
 /**
  * This function creates a ListStore from a playlist
- * \param plc the playlist
+ * \param list the playlist
  * \return the new ListStore
  */
 GtkListStore *pl_create_list_store(MpdPlContainer *list);
@@ -129,8 +129,8 @@ gboolean check_update_interval(gpointer data);
 void debug_fprintf(FILE *out, char *format, ...);
 
 /**
- * get the data dir for the config file<br/>
- * (~/.musicus/ for the standalone version,<br/>
+ * get the data dir for the config file<br>
+ * (~/.musicus/ for the standalone version,<br>
  *  ~/.gnome2/musicus/ for the applet)
  * \param dir a buffer for the result
  * \param len the length of dir

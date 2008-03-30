@@ -54,7 +54,7 @@
 /**
  * reset the last applied from the above formattings
  * You need to have as many NORMALs in your format
- * string as you had of the others.<br/>
+ * string as you had of the others.<br>
  * They have to be properly nested.
  */
 #define NORMAL "\033[0m"

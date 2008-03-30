@@ -70,7 +70,7 @@ enum  MpdActionType_ {
 
 /**
  * MpdActionType is used to communicate the
- * desired action to the action callback.<br/>
+ * desired action to the action callback.<br>
  * Use the macros #GPOINTER_TO_ACTION_TYPE
  * and #ACTION_TYPE_TO_GPOINTER for conversion
  * between gpointers to ActionTypes.
