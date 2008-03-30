@@ -28,9 +28,11 @@
 #include <glib/gprintf.h>
 
 struct _MusicusPlaylistViewPrivate {
+    /// list for the songs
     GList *songs;
+    /// id of the active element
     gint active_id;
-    /* for destruction purposes */
+    /// used to ensure that dispose doesn't run twice or that data is valid.
     gboolean dispose_has_run;
 };
 
