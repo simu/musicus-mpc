@@ -40,9 +40,10 @@ local_install: code
 	cp $(SBINARIES) bin/
 
 install: GNOME_MusicusApplet.server
-	cp $(IBINARIES) $(INSTALL_DIR)
+	install $(IBINARIES) $(INSTALL_DIR)
 	cp GNOME_MusicusApplet.server $(BONOBO_DIR)
 	cp data/musicus-mpc.png $(DATA_DIR)
+	cp data/musicus-mpc.png $(DATA_DIR)/musicus-applet.png
 	mkdir -p $(SHARE_DIR)/musicus_applet
 	cp data/GNOME_MusicusApplet.xml $(SHARE_DIR)/musicus_applet
 
