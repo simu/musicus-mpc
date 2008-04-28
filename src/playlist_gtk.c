@@ -122,7 +122,7 @@ void playlist_update_tree(void) {
     if((PlListStore != NULL) && (PlTreeView != NULL)) {
 	/* reset and refill PlListStore and PlTreeView */
 	gtk_list_store_clear(PlListStore);
-	if(plc == NULL) PlListStore = pl_empty_tree_store();
+	if(plc == NULL) PlListStore = pl_empty_list_store();
 	else {
 	    PlListStore = pl_create_list_store(plc);
 	    mpd_pl_container_free(plc);
