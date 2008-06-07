@@ -41,6 +41,8 @@ local_install: code
 
 install: GNOME_MusicusApplet.server
 	install $(IBINARIES) $(INSTALL_DIR)
+	$([ -h $(INSTALL_DIR)/musicus ] && rm $(INSTALL_DIR)/musicus)
+	ln -s $(INSTALL_DIR)/musicus-mpc $(INSTALL_DIR)/musicus
 	cp GNOME_MusicusApplet.server $(BONOBO_DIR)
 	cp data/musicus-mpc.png $(DATA_DIR)
 	cp data/musicus-mpc.png $(DATA_DIR)/musicus-applet.png
