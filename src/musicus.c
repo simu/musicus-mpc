@@ -24,6 +24,7 @@
  **********************************************************************/
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "definitions_gtk.h"
 #include "gui.h"
@@ -53,14 +54,20 @@ int main(int argc, char *argv[]) {
     mpd_info.update_routines = NULL;
     mpd_info.period_funcs = NULL;
 
-    mpd_info.obj = mpd_new(HOST,PORT,PASSWORD);
+    if(strcmp(PASSWORD, "") == 0)
+	mpd_info.obj = mpd_new(HOST,PORT,NULL);
+    else
+        mpd_info.obj = mpd_new(HOST,PORT,PASSWORD);
 
     msi_fill(&mpd_info);
 
     /* check if we want to auto-connect to mpd */
     if(mpd_info.auto_connect) {
-        if(mpd_connect(mpd_info.obj)==MPD_OK)
+        if(mpd_connect(mpd_info.obj)==MPD_OK) {
+	    mpd_send_password(mpd_info.obj);
+	    mpd_set_connection_timeout(mpd_info.obj, 5);
             mpd_info.msi.connected = TRUE;
+	}
 	else
 	    mpd_info.msi.connected = FALSE;
     }
