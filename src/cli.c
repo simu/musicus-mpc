@@ -2,7 +2,7 @@
 #include <errno.h>
 #include <string.h>
 
-#include <libmpd/debug_printf.h>
+//#include <libmpd/debug_printf.h>
 
 #include "mpd.h"
 
