@@ -151,13 +151,13 @@ static gboolean musicus_applet_fill (PanelApplet *applet, const gchar *iid, gpoi
 	/* open log file */
 	snprintf(file_path, 100, "%s/log.txt", data_dir);
 	log_file = fopen(file_path, "a+");
-	fprintf(log_file, "------- new execution --------");
+	fprintf(log_file, "------- new execution --------\n");
 	fflush(log_file);
 
 	/* open error file */
 	snprintf(file_path, 100, "%s/err.txt", data_dir);
 	err_file = fopen(file_path, "a+");
-	fprintf(err_file, "---------new execution--------");
+	fprintf(err_file, "---------new execution--------\n");
 	fflush(err_file);
 
 
