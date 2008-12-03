@@ -9,7 +9,10 @@ SHARE_DIR=/usr/share/gnome-applets
 
 VERSION=0.1c
 
-.PHONY: clean install local_install dist doxy GNOME_MusicusApplet.server uninstall
+#for deb creation
+prefix=$(INSTALL_DIR)
+
+.PHONY: clean install local_install dist doxy GNOME_MusicusApplet.server uninstall deb rpm
 
 #export all variables
 export
@@ -40,9 +43,10 @@ local_install: code
 	cp $(SBINARIES) bin/
 
 install: GNOME_MusicusApplet.server
-	install $(IBINARIES) $(INSTALL_DIR)
-	$([ -h $(INSTALL_DIR)/musicus ] && rm $(INSTALL_DIR)/musicus)
-	ln -s $(INSTALL_DIR)/musicus-mpc $(INSTALL_DIR)/musicus
+	echo $(prefix)
+	install $(IBINARIES) $(prefix)
+	$([ -h $(prefix)/musicus ] && rm $(prefix)/musicus)
+	ln -s $(prefix)/musicus-mpc $(prefix)/musicus
 	cp GNOME_MusicusApplet.server $(BONOBO_DIR)
 	cp data/musicus-mpc.png $(DATA_DIR)
 	cp data/musicus-mpc.png $(DATA_DIR)/musicus-applet.png
@@ -75,6 +79,9 @@ dist:
 	(cd tmp && tar cjf ../musicus-mpc-$(VERSION).tar.bz2 musicus-mpc/*)
 	(cd tmp && tar czf ../musicus-mpc-$(VERSION).tar.gz musicus-mpc/*)
 	rm -r tmp/musicus-mpc 
+
+deb:
+	fakeroot debian/rules binary
 
 clean:
 	touch $(BBINARIES)

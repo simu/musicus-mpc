@@ -1,0 +1,15 @@
+Source: musicus
+Section: Multimedia
+Priority: extra
+Maintainer: Simon Gerber <simugerber@student.ethz.ch>
+Build-Depends: debhelper (>= 7), autotools-dev
+Standards-Version: 3.7.3
+Homepage: <http://musicus-mpc.berlios.de>
+
+Package: musicus
+Architecture: i386
+Depends: ${shlibs:Depends}, ${misc:Depends}, mpd, libmpd, libpanel-applet2-0
+Description: A gnome-panel applet and stand-alone client for MPD. 
+ A GNOME panel applet which controls the Music Player Daemon MPD
+ (see http://musicpd.org) as well as a stand-alone version of the
+ playlist/media browser part of the applet called musicus-mpc.

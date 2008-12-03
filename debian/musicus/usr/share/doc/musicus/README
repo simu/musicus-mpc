@@ -1,0 +1,39 @@
+== musicus applet == 
+An applet for the gnome-panel which enables you to control
+mpd (http://musicpd.org/). It currently supports Play/Pause,
+Stop, Forward, Rewind, a playlist editor and a media browser
+(and experimental lyrics fetching)
+
+
+== musicus-mpc ==
+standalone version of the windowed Playlist/Media Browser part of
+musicus-applet. This (although starting out as a testing utitlity)
+is now usable as full mpd client.
+
+== requirements ==
+Install the -dev packages with your package-manager, if needed.
+* GTK+-2.0 >= 2.10.11
+* libmpd >= 0.12.0
+* libpanelapplet (gnome-panel-applet library) >= 2.18
+
+== installation ==
+you might need to adjust the variables INSTALL_DIR, BONOBO_DIR,
+DATA_DIR and SHARE_DIR in the Makefile.
+The standard paths assume that you have GNOME installed in /usr.
+If you don't know if GNOME is installed in /usr it is probably there.
+Refer to the documentation for your distribution if unsure.
+
+* INSTALL_DIR points to the place where the binaries are installed.
+* BONOBO_DIR is the path to the bonobo components 
+* DATA_DIR is the path to the standard pximap directory (you probably don't need to change that)
+* SHARE_DIR is the path to the shared data directory for gnome-applets (you probably don't need to change this path)
+
+== documentation ==
+after running make doxy you will find the developer documentation in the
+subdirectory doc/. To generate the documentation you need doxygen.
+
+
+== credits ==
+musical notes in the logo created by Ken Saunders.
+Graphics available at
+http://www.mouserunner.com/Spheres_Free_Musical_Notes.html

@@ -1,0 +1,55 @@
+TODO -- 2007/12/15
+===============================
+
+CODES: (cn)
+ c = { OPEN, PROBABLY FIXED, FIXED, DISCONTINUED}
+ n = running number (00 - 99)
+
+OPEN:
+ FUNCTIONAL:
+  (000) double-click on applet => playlist window -- does not work,
+        even though same code as volume-control applet
+  (001) Don't terminate abnormally if mpd service is stopped -- !IMPORTANT! 2007/12/19 probably fixed, no extended tests though. It might also have introduced a new bug concerning manual connect/disconnect from mpd
+  (002) Change song order in playlist
+  (003) save/load playlists (through mpd)
+  (004) Volume Control
+  (005) Make lyrics display configurable, as it is still likely to 
+        crash the whole applet/program
+  (006) Command line flags for disabling fetching lyrics / verbosity
+  (007) Don't block too long in fetch_lyrics
+  (008) Playlist reordering
+  (009) Change playlist display into list instead of tree
+
+ DEBUG/LOG FACILITIES
+  (030) ifdef all debug output, so it can be completely disabled at compile
+        time, could give performance impact
+
+ CODING
+
+PROBABLY FIXED:
+ (100) Media Browser (dep. libmpd) does not work for Applet,
+       has sth to do w/ libmpd, mpdobj -- 2007/09/22 -- 2007/10: 
+       probably corresponded to (103)
+ (101) bugs in media browser (disappearing of window contents) -- 2007/09
+ (102) problems with pause timer display (counting too fast in statusbar /
+       reset in tooltip) 
+ (103) Media Browser does not work with applet, when applet is loaded on
+       system start, works when applet is reloaded later on -- 2007/10
+       problem was that on my machine mpd started only after networking
+       which needed some time to start ( wireless & wpa_supplicant 
+
+FIXED:
+ (200) Verbose Applet
+ (201) Rearrange Playlist, Search + Media Browser
+       into Panes in Playlist window 
+ (202) title updater for applet 
+ (203) settings (mpd host, port; log level ...) 
+ (204) tooltip/status/title format in config 
+ (205) create a possibility to reload the media-browser root window. 
+ (206) Random/Repeat/Xfade display 
+ (207) Possibility to add streams to playlist
+ (270) write proper documentation
+DISCONTINUED:
+ (308) started lyrics fetcher (just works with www.darklyrics.com for now)
+ (331) try to build a log window -- not very important right now,
+       kicked the code for opening a log window out (2007/12)

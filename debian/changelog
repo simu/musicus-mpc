@@ -1,0 +1,6 @@
+musicus (0.1c-1) unstable; urgency=low
+
+  * Initial release as .deb, see included ChangeLog for details
+
+ -- Simon Gerber <simon@unknown>  Wed, 03 Dec 2008 18:13:04 +0100
+
