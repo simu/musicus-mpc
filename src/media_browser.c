@@ -354,7 +354,7 @@ static void media_browser_row_activated_cb(GtkTreeView *tv, GtkTreePath *p, GtkT
  */
 static gboolean media_browser_button_pressed_cb(GtkWidget *widget, GdkEventButton *event_btn, gpointer data) {
 	/* on right mouse button */
-	if(event_btn->type == GDK_BUTTON_PRESS && event_btn->button == 3) {
+	if(event_btn->type == GDK_BUTTON_PRESS && (event_btn->button == 3 || event_btn->button == 2)) {
 		gchar *dirpath;
 
 		/* get the row the user clicked on */
@@ -383,18 +383,23 @@ static gboolean media_browser_button_pressed_cb(GtkWidget *widget, GdkEventButto
 						   M_COLUMN_FILE, &dirpath,
 						   -1);
 
-		GtkWidget *menu;
-		GtkWidget *menu_item;
-		menu = gtk_menu_new();
+		if(event_btn->button == 3) {
+		    GtkWidget *menu;
+		    GtkWidget *menu_item;
+		    menu = gtk_menu_new();
 
-		menu_item = gtk_menu_item_new_with_label("Add to playlist");
-		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menu_item);
-		g_signal_connect(G_OBJECT(menu_item), "activate",
-						 G_CALLBACK(mpd_add_directory_to_playlist), dirpath);
+		    menu_item = gtk_menu_item_new_with_label("Add to playlist");
+		    gtk_menu_shell_append(GTK_MENU_SHELL(menu), menu_item);
+		    g_signal_connect(G_OBJECT(menu_item), "activate",
+						     G_CALLBACK(mpd_add_directory_to_playlist), dirpath);
 
-		gtk_widget_show_all(menu);
+		    gtk_widget_show_all(menu);
 
-		gtk_menu_popup(GTK_MENU(menu),NULL,NULL, NULL,NULL,event_btn->button,gdk_event_get_time((GdkEvent*)event_btn));
+		    gtk_menu_popup(GTK_MENU(menu),NULL,NULL, NULL,NULL,event_btn->button,gdk_event_get_time((GdkEvent*)event_btn));
+		}
+		else if(event_btn->button == 2) { /* middle-click -> add directory to playlist */
+		    mpd_add_directory_to_playlist(NULL, (gpointer)dirpath);
+		}
 
 
 		return TRUE;
