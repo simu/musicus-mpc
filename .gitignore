@@ -1,5 +1,7 @@
 Makefile
 config.h
+config.sub
+config.guess
 GNOME_MusicusApplet.server
 gobjectify-patches
 src/*.o
@@ -11,3 +13,12 @@ cscope.out
 src/Makefile.applet
 src/Makefile
 debian/musicus
+debian/cron.d.ex
+debian/emacsen-*
+debian/files
+debian/init.d.*
+debian/*.log
+debian/musicus.default.ex
+debian/README.Debian
+*.swp
+*~
