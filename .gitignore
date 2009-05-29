@@ -1,0 +1,13 @@
+Makefile
+config.h
+GNOME_MusicusApplet.server
+gobjectify-patches
+src/*.o
+src/musicus-mpc
+src/musicus_applet
+src/cli
+src/media_browser
+cscope.out
+src/Makefile.applet
+src/Makefile
+debian/musicus
