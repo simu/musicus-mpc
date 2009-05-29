@@ -1,16 +1,16 @@
 # Makefile
 
-INSTALL_DIR=/usr/bin
-BONOBO_DIR=/usr/lib/bonobo/servers
-DATA_DIR=/usr/share/pixmaps
-SHARE_DIR=/usr/share/gnome-applets
+# variable prefix
+prefix=/usr
+
+INSTALL_DIR=$(prefix)/bin
+BONOBO_DIR=$(prefix)/lib/bonobo/servers
+DATA_DIR=$(prefix)/share/pixmaps
+SHARE_DIR=$(prefix)/share/gnome-applets
 
 #don't edit below
 
 VERSION=0.1c
-
-#for deb creation
-prefix=$(INSTALL_DIR)
 
 .PHONY: clean install local_install dist doxy GNOME_MusicusApplet.server uninstall deb rpm
 
@@ -47,7 +47,9 @@ install: GNOME_MusicusApplet.server
 	install $(IBINARIES) $(prefix)
 	$([ -h $(prefix)/musicus ] && rm $(prefix)/musicus)
 	ln -s $(prefix)/musicus-mpc $(prefix)/musicus
+	mkdir -p $(BONOBO_DIR)
 	cp GNOME_MusicusApplet.server $(BONOBO_DIR)
+	mkdir -p $(DATA_DIR)
 	cp data/musicus-mpc.png $(DATA_DIR)
 	cp data/musicus-mpc.png $(DATA_DIR)/musicus-applet.png
 	mkdir -p $(SHARE_DIR)/musicus_applet
