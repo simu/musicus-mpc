@@ -44,6 +44,7 @@ static void musicus_playlist_view_init (GTypeInstance *instance, gpointer class)
 static void musicus_playlist_view_dispose (GObject *object);
 static void musicus_playlist_view_finalize (GObject *object);
 void row_activated_cb (GtkTreeView *tv, GtkTreePath *path, GtkTreeViewColumn *c, gpointer data);
+void row_inserted_cb (GtkTreeView *tv, GtkTreePath *path, GtkTreeIter *iter, gpointer data);
 
 /* get a new MusicusPlaylistView instance for the user */
 MusicusPlaylistView *musicus_playlist_view_new() {
@@ -101,9 +102,6 @@ void musicus_playlist_view_build_view_from_songs(MusicusPlaylistView *pl) {
 		    NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(pl), c);
     }
-
-    g_signal_connect (G_OBJECT (pl), "row-activated",
-		      G_CALLBACK(row_activated_cb), NULL);
 
     return;
 }
@@ -202,16 +200,41 @@ static void musicus_playlist_view_class_init (MusicusPlaylistViewClass *klass, g
 
     /* this initializes space for the private structure */
     g_type_class_add_private (klass, sizeof (MusicusPlaylistViewPrivate));
+
+    GType *param_types = malloc(sizeof(GType));
+
+    /* initialize signals for MusicusPlaylistView */
+    param_types[0] = G_TYPE_UINT;
+    g_signal_new("active-changed", MUSICUS_PLAYLIST_VIEW_TYPE,
+		 G_SIGNAL_RUN_FIRST, 0, NULL, NULL, NULL, G_TYPE_NONE,
+		 1, param_types);
+    g_signal_new("order-changed", MUSICUS_PLAYLIST_VIEW_TYPE,
+		 G_SIGNAL_RUN_FIRST, 0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+
     return;
 }
 
 /* Initialize MusicusPlaylistView instances */
 static void musicus_playlist_view_init (GTypeInstance *instance, gpointer class) {
+    GtkListStore *store;
+    GtkTreeSelection *tree_selection;
     MusicusPlaylistView *self = MUSICUS_PLAYLIST_VIEW (instance);
     self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, MUSICUS_PLAYLIST_VIEW_TYPE, MusicusPlaylistViewPrivate);
     self->priv->songs = NULL;
     self->priv->active_id = -1;
     self->priv->dispose_has_run = FALSE;
+
+    store = GTK_LIST_STORE(gtk_tree_view_get_model (GTK_TREE_VIEW(self)));
+    /* set-up for drag-n-drop reordering */
+    gtk_tree_view_set_reorderable(GTK_TREE_VIEW(self), TRUE);
+    g_signal_connect(G_OBJECT(store), "row-inserted",
+		     G_CALLBACK(row_inserted_cb), NULL);
+    tree_selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(self));
+    g_signal_connect(G_OBJECT(self), "row-activated",
+		     G_CALLBACK(row_activated_cb), GTK_TREE_SELECTION(tree_selection));
+//    g_signal_connect(G_OBJECT(self), "key-press-event",
+//		     G_CALLBACK(self_key_pressed), (gpointer)tree_selection);
+
     return;
 }
 
@@ -264,10 +287,15 @@ void row_activated_cb (GtkTreeView *tv, GtkTreePath *path, GtkTreeViewColumn *c,
 
     activated = atoi(id);
 
+    if(musicus_playlist_view_get_active_id(MUSICUS_PLAYLIST_VIEW(tv)) != activated)
+	g_signal_emit_by_name(MUSICUS_PLAYLIST_VIEW(tv), "musicus-playlist-view-active-changed", activated);
+
     musicus_playlist_view_set_active_id(MUSICUS_PLAYLIST_VIEW(tv), activated);
 
     return;
 }
 
+void row_inserted_cb (GtkTreeView *tv, GtkTreePath *path, GtkTreeIter *iter, gpointer data) {
+}
 /* vim:sts=4:shiftwidth=4
  */

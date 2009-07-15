@@ -19,8 +19,8 @@ FULL_BINARY_OPTS=$(FULL_CFLAGS) $(FULL_LIBS)
 BINARIES=cli media_browser musicus-mpc
 
 HEADERS=definitions.h mpd.h colorcodes.h media_browser.h support.h playlist.h playlist_gtk.h gui.h search.h preferences.h mpd_action.h musicus_playlist_view.h musicus_song.h ../config.h
-COMMON_OBJS=mpd.o media_browser.o support.o playlist.o playlist_gtk.o gui.o search.o preferences.o mpd_action.o 
-ALL_OBJS=$(COMMON_OBJS) cli.o musicus.o musicus_playlist_view.o musicus_song.o
+COMMON_OBJS=mpd.o media_browser.o support.o playlist.o playlist_gtk.o gui.o search.o preferences.o mpd_action.o musicus_playlist_view.o musicus_song.o
+ALL_OBJS=$(COMMON_OBJS) cli.o musicus.o
 
 all: $(BINARIES)
 
@@ -50,7 +50,7 @@ gui.o: gui.c $(HEADERS)
 	$(CC) -c $(CFLAGS) $(GTK_CFLAGS) $(LIBMPD_CFLAGS) -o gui.o gui.c
 
 preferences.o: preferences.c $(HEADERS)
-	$(CC) -c $(CFLAGS) $(GTK_CFLAGS) -o preferences.o preferences.c
+	$(CC) -c $(CFLAGS) $(GTK_CFLAGS) $(LIBMPD_CFLAGS) -o preferences.o preferences.c
 
 mpd_action.o: mpd_action.c $(HEADERS)
 	$(CC) -c $(CFLAGS) $(GTK_CFLAGS) $(LIBMPD_CFLAGS) -o mpd_action.o mpd_action.c

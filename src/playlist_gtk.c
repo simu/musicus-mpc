@@ -25,12 +25,13 @@
 
 #include <gdk/gdkkeysyms.h>
 
+#include "musicus_playlist_view.h"
 #include "playlist_gtk.h"
 #include "support.h"
 #include "mpd.h"
 
 /************** local functions **************/
-static void pl_row_activated(GtkTreeView *tv, GtkTreePath *path, GtkTreeViewColumn *column, gpointer data);
+static void pl_row_activated(GtkTreeView *tv, guint new_active, gpointer data);
 static void pl_key_pressed(GtkWidget *widget, GdkEventKey *key, gpointer data);
 static void pl_row_inserted(GtkTreeView *tv, GtkTreePath *path, GtkTreeIter *iter, gpointer data);
 
@@ -42,7 +43,7 @@ static GtkWidget *PlTreeView;
 /* initalize playlist widget */
 GtkWidget *init_pl_widget(void) {
 
-    GtkWidget *pl_widget, *pl_tree_view, *scrolled_window;
+    GtkWidget *pl_widget, *playlist_view, *scrolled_window;
     GtkListStore *pl_list_store;
     GtkObject *h_adjustment, *v_adjustment;
     GtkTreeSelection *tree_selection;
@@ -60,7 +61,7 @@ GtkWidget *init_pl_widget(void) {
 	fprintf(log_file, "[%s:%3i] %s(): before pl_new()\n", __FILE__, __LINE__, __FUNCTION__);
 	fflush(log_file);
     }
-    /* create the tree view with the mpd playlist and set appropriate global references */
+    /* create the tree view with the mpd playlist_view and set appropriate global references */
     if(plc == NULL) pl_list_store = pl_empty_list_store();
     else {
 	pl_list_store = pl_create_list_store(plc);
@@ -68,18 +69,21 @@ GtkWidget *init_pl_widget(void) {
     }
     PlListStore = pl_list_store;
 
-    pl_tree_view = pl_create_tree_view(GTK_TREE_MODEL(pl_list_store));
-    gtk_tree_view_set_reorderable(GTK_TREE_VIEW(pl_tree_view), TRUE);
-    g_signal_connect(G_OBJECT(pl_list_store), "row-inserted",
-		     G_CALLBACK(pl_row_inserted), NULL);
-    PlTreeView = pl_tree_view;
-    tree_selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(pl_tree_view));
+    //playlist_view = pl_create_tree_view(GTK_TREE_MODEL(pl_list_store));
+    playlist_view = musicus_playlist_view_new();
+//    gtk_tree_view_set_reorderable(GTK_TREE_VIEW(playlist_view), TRUE);
+//    g_signal_connect(G_OBJECT(pl_list_store), "row-inserted",
+//		     G_CALLBACK(pl_row_inserted), NULL);
+    PlTreeView = playlist_view;
+//   tree_selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(playlist_view));
     /* set up for double-click -> plays selected song */
-    gtk_tree_selection_set_mode(tree_selection, GTK_SELECTION_MULTIPLE);
-    g_signal_connect(G_OBJECT(pl_tree_view), "row-activated",
-		     G_CALLBACK(pl_row_activated), GTK_TREE_SELECTION(tree_selection));
-    g_signal_connect(G_OBJECT(pl_tree_view), "key-press-event",
-		     G_CALLBACK(pl_key_pressed), (gpointer)tree_selection);
+//    gtk_tree_selection_set_mode(tree_selection, GTK_SELECTION_MULTIPLE);
+//    g_signal_connect(G_OBJECT(playlist_view), "row-activated",
+//		     G_CALLBACK(pl_row_activated), GTK_TREE_SELECTION(tree_selection));
+//    g_signal_connect(G_OBJECT(playlist_view), "key-press-event",
+//		     G_CALLBACK(pl_key_pressed), (gpointer)tree_selection);
+    g_signal_connect(G_OBJECT(playlist_view), "active-changed",
+		     G_CALLBACK(pl_row_activated), NULL);
 
 
     if (debug) {
@@ -96,7 +100,7 @@ GtkWidget *init_pl_widget(void) {
     /* display scrollbars only when needed */
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-    gtk_container_add(GTK_CONTAINER(scrolled_window), pl_tree_view);
+    gtk_container_add(GTK_CONTAINER(scrolled_window), playlist_view);
     pl_widget = scrolled_window;
 
     return pl_widget;
@@ -275,34 +279,22 @@ void mpd_add_directory_to_playlist(GtkWidget *widget, gpointer data) {
 /*********** local functions **********/
 
 /* callback if a row of the playlist is double-clicked */
-static void pl_row_activated(GtkTreeView *tv, GtkTreePath *path, GtkTreeViewColumn *column, gpointer data) {
+static void pl_row_activated(GtkTreeView *tv, guint new_active, gpointer data) {
 
-    GtkTreeIter iter;
-    GtkTreeModel *model;
-    gint pl_id;
-
-    pl_id = -32;
-
-    model = gtk_tree_view_get_model(tv);
-    gtk_tree_model_get_iter(model, &iter, path);
-    gtk_tree_model_get(model, &iter, COLUMN_PL_ID, &pl_id, -1);
-
-    if(pl_id > -32) {
-	// if auto connect is set, try to reconnect
-	if(mpd_info.msi.connected) {
-	    if(!mpd_check_connected(mpd_info.obj)) {
-		if(mpd_connect(mpd_info.obj) != MPD_OK) {
-		    msi_clear(&mpd_info);
-		    mpd_info.msi.connected = FALSE;
-		    return;
-		}
-		msi_fill(&mpd_info);
-		mpd_info.msi.connected = TRUE;
+    // if auto connect is set, try to reconnect
+    if(mpd_info.msi.connected) {
+	if(!mpd_check_connected(mpd_info.obj)) {
+	    if(mpd_connect(mpd_info.obj) != MPD_OK) {
+		msi_clear(&mpd_info);
+		mpd_info.msi.connected = FALSE;
+		return;
 	    }
-	    mpd_player_play_id(mpd_info.obj, pl_id);
+	    msi_fill(&mpd_info);
+	    mpd_info.msi.connected = TRUE;
 	}
+	mpd_player_play_id(mpd_info.obj, new_active);
     }
-    fprintf(log_file, "[%s:%3i] %s(): pl_id = %i\n", __FILE__, __LINE__, __FUNCTION__, pl_id);
+    fprintf(log_file, "[%s:%3i] %s(): pl_id = %i\n", __FILE__, __LINE__, __FUNCTION__, new_active);
     fflush(log_file);
 
     return;

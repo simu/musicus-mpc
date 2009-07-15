@@ -46,7 +46,7 @@ gui.a.o: gui.c $(HEADERS)
 	$(CC) -c $(CFLAGS) $(APPLET_CFLAGS) $(LIBMPD_CFLAGS) -o gui.a.o gui.c
 
 preferences.a.o: preferences.c $(HEADERS)
-	$(CC) -c $(CFLAGS) $(APPLET_CFLAGS) -o preferences.a.o preferences.c
+	$(CC) -c $(CFLAGS) $(APPLET_CFLAGS) $(LIBMPD_CFLAGS) -o preferences.a.o preferences.c
 
 mpd_action.a.o: mpd_action.c $(HEADERS)
 	$(CC) -c $(CFLAGS) $(APPLET_CFLAGS) $(LIBMPD_CFLAGS) -o mpd_action.a.o mpd_action.c
