@@ -85,8 +85,8 @@ int main(int argc, char *argv[]) {
 
     mpd_info.period_funcs = g_list_append(mpd_info.period_funcs, check_update_interval);
 
-    g_timeout_add(mpd_info.update_interval, update_info, (gpointer) mpd_info.update_interval);
-    g_timeout_add(500, check_update_interval, (gpointer) mpd_info.update_interval);
+    g_timeout_add(mpd_info.update_interval, update_info, &mpd_info.update_interval);
+    g_timeout_add(500, check_update_interval, &mpd_info.update_interval);
 
     //mpd_signal_connect_status_changed(mpd_info.obj, (StatusChangedCallback)mpd_status_changed_cb, NULL);
     mpd_signal_connect_status_changed(mpd_info.obj, (StatusChangedCallback)gui_mpd_status_changed_cb, NULL);

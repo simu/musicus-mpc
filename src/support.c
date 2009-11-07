@@ -344,7 +344,7 @@ gboolean update_info(gpointer data) {
 			mpd_info.msi.connected = TRUE;
 		}
 		mpd_status_update(mpd_info.obj);
-		return ((mpd_info.update_interval != (int)data) ? FALSE : TRUE);
+		return ((mpd_info.update_interval != *(int*)data) ? FALSE : TRUE);
     }
 #ifdef APPLET
     snprintf(ap_text, 255, "MPD");
@@ -507,7 +507,7 @@ gboolean check_update_interval(gpointer data) {
     GList *u_r = mpd_info.update_routines;
 
     if(mpd_info.msi.connected) {
-	if(old_interval == -1) old_interval = (gint)data;
+	if(old_interval == -1) old_interval = *(int*)data;
 	    if(old_interval != mpd_info.update_interval) {
 			if(verbose) {
 				fprintf(log_file, "[%s:%3i] %s(): update interval has changed!\n", __FILE__, __LINE__, __FUNCTION__);
@@ -518,7 +518,7 @@ gboolean check_update_interval(gpointer data) {
 			while(u_r != NULL) {
 				if(verbose)
 				fprintf(log_file, "g_timeout_add... ");
-				g_timeout_add(mpd_info.update_interval, u_r->data, (gpointer)mpd_info.update_interval);
+				g_timeout_add(mpd_info.update_interval, u_r->data, &mpd_info.update_interval);
 				u_r = g_list_next(u_r);
 			}
 			old_interval = mpd_info.update_interval;

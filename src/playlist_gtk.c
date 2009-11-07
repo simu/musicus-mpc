@@ -144,7 +144,8 @@ void pl_del_songs(GtkWidget *widget, gpointer data) {
     GList *selection;
     GtkTreeModel *tree_model;
 
-    pl_id = (gint *)-32;
+    pl_id = g_alloca(sizeof(gint));
+    *pl_id = -32;
 
     selection = gtk_tree_selection_get_selected_rows(GTK_TREE_SELECTION(data), &tree_model);
     selection_length = g_list_length(selection);
@@ -165,12 +166,12 @@ void pl_del_songs(GtkWidget *widget, gpointer data) {
     }
     for(i=0; i<selection_length; i++) {
 	gtk_tree_model_get_iter(tree_model, &iter, selection->data);
-	gtk_tree_model_get(tree_model, &iter, COLUMN_PL_ID, &pl_id, -1);
+	gtk_tree_model_get(tree_model, &iter, COLUMN_PL_ID, pl_id, -1);
 	if(debug) {
-	    fprintf(log_file, "[%s:%3i] %s(): song id = %i\n", __FILE__, __LINE__, __FUNCTION__, (int)pl_id);
+	    fprintf(log_file, "[%s:%3i] %s(): song id = %i\n", __FILE__, __LINE__, __FUNCTION__, *pl_id);
 	    fflush(log_file);
 	}
-	mpd_playlist_queue_delete_id(mpd_info.obj, (int)pl_id);
+	mpd_playlist_queue_delete_id(mpd_info.obj, *pl_id);
 	selection = g_list_next(selection);
     }
     mpd_playlist_queue_commit(mpd_info.obj);

@@ -50,8 +50,8 @@
 #include "../config.h"
 
 #include <stdio.h>
-#include <libmpd/libmpd.h>
-#include <libmpd/libmpdclient.h>
+#include <libmpd-1.0/libmpd/libmpd.h>
+#include <libmpd-1.0/libmpd/libmpdclient.h>
 #include <glib.h>
 
 #define AUTHORS "Simon Gerber <simugerber@student.ethz.ch>"

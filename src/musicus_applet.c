@@ -37,7 +37,7 @@
 static void musicus_applet_new(MusicusApplet *ma);
 static void musicus_applet_init(MusicusApplet *ma);
 static gboolean update_tooltip(gpointer data);
-static gboolean tooltip_cb(GtkWidget *widget, gint x, gint y, gboolean keyboard_mode, GtkTooltip *tooltip, gpointer user_data);
+//static gboolean tooltip_cb(GtkWidget *widget, gint x, gint y, gboolean keyboard_mode, GtkTooltip *tooltip, gpointer user_data);
 static void about_cb (BonoboUIComponent *uic, gpointer data, const gchar *verbname);
 static void properties_cb(BonoboUIComponent *uic, gpointer data, const gchar *verbname);
 static void applet_text_cb(BonoboUIComponent *uic, gpointer data, const gchar *verbname);
@@ -75,7 +75,7 @@ static gboolean update_tooltip(gpointer data) {
 	gtk_widget_set_tooltip_text(GTK_WIDGET(musicus_applet.applet), tt_text);
 	/* update applet text */
 	gtk_label_set_text(GTK_LABEL(musicus_applet.label), ap_text);
-	return ((mpd_info.update_interval != (int)data) ? FALSE : TRUE);
+	return ((mpd_info.update_interval != *(int*)data) ? FALSE : TRUE);
 }
 
 #if 0
@@ -97,14 +97,16 @@ static void about_cb(BonoboUIComponent *uic, gpointer data, const gchar *verbnam
 	};
 
 	gtk_show_about_dialog(NULL,
-		"name",	"Musicus MPD client",
+		"program-name",	"Musicus MPD client",
 		"version", VERSION,
 		"comments", "Musicus is a MPD client for the GNOME Panel.",
-		"copyright", "\xC2\xA9 2006 - 2008 S. Gerber",
+		"copyright", "\xC2\xA9 2006 - 2009 S. Gerber",
 		"authors", authors,
 		"documenters", documenters,
 		"translator-credits", "translator-credits",
 		"logo-icon-name", LOGO,
+		"website",	    "http://musicus-mpc.berlios.de/",
+		"website-label",    "Musicus project page (BerliOS)",
 		NULL
 	);
 	return;
@@ -191,7 +193,8 @@ static gboolean musicus_applet_fill (PanelApplet *applet, const gchar *iid, gpoi
 
 	/* tooltips */
 	gtk_widget_set_tooltip_text(GTK_WIDGET(applet), "Musicus MPD Client");
-	/* gtk_widget_set_has_tooltip(GTK_WIDGET(applet), TRUE);
+	gtk_widget_set_has_tooltip(GTK_WIDGET(applet), TRUE);
+#if 0
 	g_signal_connect(G_OBJECT(applet), "query-tooltip",
 			 G_CALLBACK(tooltip_cb), NULL);
 	tt_label = gtk_label_new("Musicus MPD client");
@@ -199,7 +202,8 @@ static gboolean musicus_applet_fill (PanelApplet *applet, const gchar *iid, gpoi
 	gtk_window_set_default_size(GTK_WINDOW(tt_win), -1, -1);
 	gtk_container_add(GTK_CONTAINER(tt_win), tt_label);
 	gtk_widget_set_tooltip_window(GTK_WIDGET(applet), GTK_WINDOW(tt_win));
-	musicus_applet.tt_label = tt_label; */
+	musicus_applet.tt_label = tt_label;
+#endif
 	
 	/* periodic funcs */
 	mpd_info.update_routines = NULL;
@@ -207,10 +211,10 @@ static gboolean musicus_applet_fill (PanelApplet *applet, const gchar *iid, gpoi
 	mpd_info.update_routines = g_list_append(mpd_info.update_routines, update_info);
 	mpd_info.update_routines = g_list_append(mpd_info.update_routines, update_tooltip);
 	mpd_info.period_funcs = g_list_append(mpd_info.period_funcs, check_update_interval);
-	g_timeout_add(mpd_info.update_interval, update_info, (gpointer)mpd_info.update_interval);
-	g_timeout_add(mpd_info.update_interval, update_tooltip, (gpointer)mpd_info.update_interval);
+	g_timeout_add(mpd_info.update_interval, update_info, &mpd_info.update_interval);
+	g_timeout_add(mpd_info.update_interval, update_tooltip, &mpd_info.update_interval);
 
-	g_timeout_add(500, check_update_interval, (gpointer)mpd_info.update_interval);
+	g_timeout_add(500, check_update_interval, &mpd_info.update_interval);
 
 	mpd_signal_connect_status_changed(mpd_info.obj, (StatusChangedCallback)gui_mpd_status_changed_cb, NULL);
 

@@ -166,7 +166,7 @@ GtkWidget *mpd_new_properties_window(GtkWindow *parent) {
 		fprintf(log_file, "[%s:%3i] %s() called\n", __FILE__, __LINE__, __FUNCTION__);
 		fflush(log_file);
 	}
-	GtkWidget *win;
+	GtkWidget *win = NULL;
 	GtkWidget *vbox;
 	GtkWidget *frame;
 	GtkWidget *table;

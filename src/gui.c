@@ -137,7 +137,7 @@ GtkWidget *mpd_win_new(int run_updater, int applet) {
 	}
 	// connect signal for the media browser page
 	g_signal_connect(G_OBJECT(panes), "switch-page",
-					 G_CALLBACK(page_switched), (guint *)mb_page_id);
+					 G_CALLBACK(page_switched), &mb_page_id);
 
 	/* Search dialog */
 	page = NULL;
@@ -233,9 +233,9 @@ GtkWidget *mpd_win_new(int run_updater, int applet) {
 		}
 		mpd_info.update_routines = g_list_append(mpd_info.update_routines, titlebar_updater);
 		mpd_info.update_routines = g_list_append(mpd_info.update_routines, auto_change_view);
-		g_timeout_add(mpd_info.update_interval, titlebar_updater, (gpointer)mpd_info.update_interval);
+		g_timeout_add(mpd_info.update_interval, titlebar_updater, &mpd_info.update_interval);
 		// hide mpd elements when appropriate
-		g_timeout_add(mpd_info.update_interval, auto_change_view, (gpointer)mpd_info.update_interval);
+		g_timeout_add(mpd_info.update_interval, auto_change_view, &mpd_info.update_interval);
 	}
 
 	if(debug) {
@@ -400,19 +400,21 @@ void open_about_dialog(GtkWidget *widget, gpointer data) {
 
 	gtk_show_about_dialog (NULL,
 #ifdef APPLET
-		"name",		"Musicus Applet",
+		"program-name",	"Musicus Applet",
 #else
-		"name",		"Musicus MPD client",
+		"program-name",	"Musicus MPD client",
 #endif
 		"version",	VERSION,
 		"comments",	"Musicus is a client for the Music Player Daemon (http://www.musicpd.org).\n" \
 		"Visit http://musicus-mpc.berlios.org\n" \
 		"compiled on " __DATE__ " " __TIME__,
-		"copyright",	"\xC2\xA9 2006 - 2008 S. Gerber",
+		"copyright",	"\xC2\xA9 2006 - 2009 S. Gerber",
 		"authors",	authors,
 		"documenters",	documenters,
 		"translator-credits",	"translator-credits",
-		"logo-icon-name",	LOGO,
+		"logo-icon-name",   LOGO,
+		"website",	    "http://musicus-mpc.berlios.de/",
+		"website-label",    "Musicus project page (BerliOS)",
 		NULL);
 	return;
 }
@@ -479,7 +481,7 @@ static gboolean titlebar_updater(gpointer data) {
 		if(mpd_has_current_song_changed())
 			playlist_update_tree();
 	}
-	if((int)data != mpd_info.update_interval) return FALSE;
+	if(*(int*)data != mpd_info.update_interval) return FALSE;
 	return TRUE;
 }
 
@@ -502,7 +504,7 @@ static gboolean auto_change_view(gpointer data) {
 				break;
 		}
 	}
-	return ((int)data == mpd_info.update_interval)?TRUE:FALSE;
+	return (*(int*)data == mpd_info.update_interval)?TRUE:FALSE;
 }
 
 /* show playlist etc and hide notConnectedMsg */
@@ -526,7 +528,7 @@ void mpd_gui_hide_mpd_elements(void) {
 static void page_switched(GtkNotebook *notebook, GtkNotebookPage *page, guint page_num, gpointer data) {
 
 	/* if new current page is media browser */
-	if(page_num == (guint)data) {
+	if(page_num == *(int*)data) {
 		media_browser_reread();
 	}
 
@@ -574,11 +576,11 @@ static void mpd_connect_cb(GtkWidget *widget, gpointer data) {
         mpd_info.msi.connected = TRUE;
 	tmp = mpd_info.period_funcs;
 	for(tmp=g_list_first(tmp);tmp!=NULL;tmp=g_list_next(tmp)) {
-	    g_timeout_add(500, (GSourceFunc)tmp->data, (gpointer)mpd_info.update_interval);
+	    g_timeout_add(500, (GSourceFunc)tmp->data, &mpd_info.update_interval);
 	}
 	tmp=mpd_info.update_routines;
 	for(tmp=g_list_first(tmp);tmp!=NULL;tmp=g_list_next(tmp)) {
-	    g_timeout_add(mpd_info.update_interval, (GSourceFunc)tmp->data, (gpointer)mpd_info.update_interval);
+	    g_timeout_add(mpd_info.update_interval, (GSourceFunc)tmp->data, &mpd_info.update_interval);
 	}
 	mpd_gui_show_mpd_elements();
     }

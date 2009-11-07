@@ -92,7 +92,7 @@ void create_applet_menu(void) {
 	gtk_widget_show_all(menu);
 
 	mpd_info.update_routines = g_list_append(mpd_info.update_routines, menu_item_pf);
-	g_timeout_add(mpd_info.update_interval, menu_item_pf, (gpointer)mpd_info.update_interval);
+	g_timeout_add(mpd_info.update_interval, menu_item_pf, &mpd_info.update_interval);
 
 	menu_visible = FALSE;
 
@@ -217,5 +217,5 @@ static gboolean menu_item_pf(gpointer data) {
 		gtk_widget_hide(menu_item_pause);
 		gtk_widget_show(menu_item_play);
 	}
-	return (mpd_info.update_interval == (int)data)?TRUE:FALSE;
+	return (mpd_info.update_interval == *(int*)data)?TRUE:FALSE;
 }

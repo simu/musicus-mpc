@@ -2,6 +2,7 @@
 
 # variable prefix
 prefix=/usr
+libexecdir=$(prefix)/lib/gnome-applets
 
 INSTALL_DIR=$(prefix)/bin
 BONOBO_DIR=$(prefix)/lib/bonobo/servers
@@ -25,14 +26,12 @@ SBINARIES=src/cli src/media_browser src/musicus-mpc
 unexport SBINARIES
 BBINARIES=bin/cli bin/media_browser bin/musicus-mpc
 unexport BBINARIES
-IBINARIES=src/musicus_applet src/musicus-mpc
-unexport IBINARIES
 
 all: code
 
 code: applet musicus
 
-applet: config.h
+applet: config.h GNOME_MusicusApplet.server
 	cd src && $(MAKE) -e applet
 
 musicus: config.h
@@ -42,11 +41,12 @@ local_install: code
 	mkdir -p bin
 	cp $(SBINARIES) bin/
 
-install: GNOME_MusicusApplet.server
-	echo $(prefix)
-	install $(IBINARIES) $(prefix)
-	$([ -h $(prefix)/musicus ] && rm $(prefix)/musicus)
-	ln -s $(prefix)/musicus-mpc $(prefix)/musicus
+install:
+	mkdir -p $(INSTALL_DIR) $(libexecdir)
+	install src/musicus-mpc $(INSTALL_DIR)
+	install src/musicus_applet $(libexecdir)
+	$([ -h $(INSTALL_DIR)/musicus ] && rm $(INSTALL_DIR)/musicus)
+	ln -s $(INSTALL_DIR)/musicus-mpc $(INSTALL_DIR)/musicus
 	mkdir -p $(BONOBO_DIR)
 	cp GNOME_MusicusApplet.server $(BONOBO_DIR)
 	mkdir -p $(DATA_DIR)
@@ -56,13 +56,14 @@ install: GNOME_MusicusApplet.server
 	cp data/GNOME_MusicusApplet.xml $(SHARE_DIR)/musicus_applet
 
 uninstall: 
-	$(cd $(INSTALL_DIR) && rm -r $(IBINARIES))
+	$(cd $(INSTALL_DIR) && rm -r musicus musicus-mpc)
+	$(cd $(libexecdir) && rm -r musicus_applet)
 	rm -f $(BONOBO_DIR)/GNOME_MusicusApplet.server
 	rm -f $(DATA_DIR)/musicus_mpc.png
 	rm -rf $(SHARE_DIR)/musicus_applet
 
 GNOME_MusicusApplet.server: GNOME_MusicusApplet.server.in
-	?sed -e 's#?bindir#$(INSTALL_DIR)#g' GNOME_MusicusApplet.server.in > GNOME_MusicusApplet.server
+	?sed -e 's#?bindir#$(libexecdir)#g' GNOME_MusicusApplet.server.in > GNOME_MusicusApplet.server
 
 config.h: config.h.in
 	?sed -e 's#?bindir#$(INSTALL_DIR)#g' -e 's#?datadir#$(DATA_DIR)#g' -e 's#?sharedir#$(SHARE_DIR)#g' -e 's#?bonobodir#$(BONOBO_DIR)#g' -e 's#?version#$(VERSION)#g' config.h.in > config.h

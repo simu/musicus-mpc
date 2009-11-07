@@ -36,7 +36,7 @@ static void mark_type(GtkWidget *widget, gpointer data);
 static void mpd_search(GtkWidget *widget, gpointer data);
 
 /************** local variables **************/
-static int search_type;
+static gint search_type;
 
 /************** implementation  **************/
 
@@ -94,7 +94,7 @@ GtkWidget *init_search_widget(GtkWidget *parent_window) {
 
 /* marks type of the search */
 static void mark_type(GtkWidget *widget, gpointer data) {
-	search_type = (int)data;
+	search_type = (gint)data;
 	return;
 }
 
