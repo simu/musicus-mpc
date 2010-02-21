@@ -132,6 +132,8 @@ static gboolean show_musicus_window(void) {
 		gtk_widget_show(MpdWin.win);
 	}
 
+	gtk_window_present(GTK_WINDOW(MpdWin.win));
+
 	MpdWin.window_creation_finished = 1;
 
 	if(mpd_info.msi.connected) {
