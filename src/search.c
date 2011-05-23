@@ -55,7 +55,7 @@ GtkWidget *init_search_widget(GtkWidget *parent_window) {
 
 	hbox = gtk_hbox_new(TRUE, 2);
 
-	for(i = 0; i < 3; i++) {
+	for(i = 0; i < 4; i++) {
 		if(i == 0) {
 			radio_group[i] = gtk_radio_button_new_with_label(
 								NULL,
@@ -71,7 +71,7 @@ GtkWidget *init_search_widget(GtkWidget *parent_window) {
 			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio_group[i]), FALSE);
 		}
 		g_signal_connect(G_OBJECT(radio_group[i]), "toggled",
-						 G_CALLBACK(mark_type), (gpointer)i);
+						 G_CALLBACK(mark_type), (gpointer) i);
 		gtk_box_pack_start_defaults(GTK_BOX(hbox), radio_group[i]);
 	}
 	gtk_box_pack_start(GTK_BOX(widget), hbox,FALSE,FALSE, 0);
@@ -94,7 +94,7 @@ GtkWidget *init_search_widget(GtkWidget *parent_window) {
 
 /* marks type of the search */
 static void mark_type(GtkWidget *widget, gpointer data) {
-	search_type = (gint)data;
+	search_type = (gint) data;
 	return;
 }
 
