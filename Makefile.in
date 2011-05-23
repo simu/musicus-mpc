@@ -87,8 +87,7 @@ deb:
 	fakeroot debian/rules binary
 
 clean:
-	touch $(BBINARIES)
 	cd src && $(MAKE) clean
-	rm -f $(BBINARIES)
+	[ -d bin ] && rm -f $(BBINARIES) || true
 	rm -f config.h GNOME_MusicusApplet.server
 
