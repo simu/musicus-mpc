@@ -509,7 +509,7 @@ void create_info_dialog(GtkWidget *window, gchar *title, gchar *info) {
 									 GTK_DIALOG_DESTROY_WITH_PARENT,
 									 GTK_MESSAGE_INFO,
 									 GTK_BUTTONS_OK,
-									 title);
+									 "%s", title);
 	gtk_message_dialog_format_secondary_text(GTK_MESSAGE_DIALOG(dialog), info);
 	gtk_dialog_run (GTK_DIALOG (dialog));
 	gtk_widget_destroy (dialog);

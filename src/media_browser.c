@@ -87,7 +87,7 @@ static gboolean read_directory_to_tree_store(char *dirname, char *parentdir) {
 		M_COLUMN_FILE, tmp->directory, -1);
 	    break;
 	    case MPD_DATA_TYPE_PLAYLIST:
-		snprintf(identifier, 256, "[p] %s", tmp->playlist);
+		snprintf(identifier, 256, "[p] %s", tmp->playlist->path);
 		gtk_tree_store_set(media_database,&iter,M_COLUMN_IDENTIFIER, identifier,
 		M_COLUMN_FILE, tmp->playlist, -1);
 	    break;

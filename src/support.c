@@ -567,14 +567,14 @@ gboolean get_data_dir(gchar *dir, int len, gboolean is_applet) {
 		errno = 0;
 		if(mkdir(_path, 0755)==-1) {
 			snprintf(error_msg, 4096, "An error occurred while creating the directory %s.\n (mkdir: %s)", _path, strerror(errno));
-			fprintf(stderr, error_msg);
+			fputs(error_msg, stderr);
 			fflush(stderr);
 			return FALSE;
 		}
 		snprintf(data_path,1024,"%s/data", _path);
 		if(mkdir(data_path, 0755)==-1) {
 			snprintf(error_msg, 4096, "An error occurred while creating the directory %s.\n (mkdir: %s)", _path, strerror(errno));
-			fprintf(stderr, error_msg);
+			fputs(error_msg, stderr);
 		}
     }
     else { fclose(p); }
