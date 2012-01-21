@@ -1,0 +1,115 @@
+/* css file for the static page */
+
+body {
+	font-family:monospace;
+	font-size:13px;
+	line-height:125%;
+	text-align:left;
+	margin:0px;
+	color:#000;
+	background-color:#fff;
+}
+
+#head {
+	margin:0px auto;
+	margin-top:15px;
+	margin-left:10%;
+	margin-right:10%;
+}
+
+#logo {
+	margin-left:5em;
+	border:none !important;
+}
+
+#main {
+	margin-top:10px;
+	margin-left:10%;
+	margin-right:10%;
+}
+
+#menu {
+	float:left;
+	width:14%;
+	margin-top:1em;
+	margin-right:1%;
+	margin-left:1%;
+}
+
+#content {
+	float:left;
+	width:75%;
+	margin-top:1em;
+	padding:1em;
+	border:1px solid #5057b0;
+}
+
+a.menu:link,
+a.menu:visited,
+a.menu:active,
+a.menu:hover
+{
+	display:block;
+	padding:2px;
+	text-align:left;
+	text-decoration:none;
+	font-weight:bold;
+	color:#003;
+	margin-bottom:5px;
+	border:1px solid #5057b0;
+}
+
+a.menu:hover {
+	color:white;
+	background-color:#5057b0;
+}
+
+.nodec {
+	text-decoration:none !important;
+}
+
+#release {
+	font-weight:bold;
+	font-size:1.2em;
+}
+
+#release a:link,
+#release a:active,
+#release a:hover,
+#release a:visited
+{
+	color:#5057b0;
+	text-decoration:none !important;
+}
+
+#release a:hover {
+	text-decoration:underline !important;
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active
+{
+	text-decoration:none !important;
+	color:#5057b0;
+}	
+
+a:hover {
+	text-decoration: underline !important;
+}
+
+.code, code {
+	font-family:monospace;
+	border:1px black solid;
+	display:block;
+	padding:0.2em;
+	margin:0.2em;
+	background-color:#feffc1;
+}
+
+.warning {
+	color:red;
+	font-weight:bold;
+}
+
