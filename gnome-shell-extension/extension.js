@@ -240,24 +240,40 @@ Musicus.prototype = {
 
 	_parse_mpc_output: function(raw_output) {
 		let lines = raw_output.split('\n');
-		this._songTitle = lines[0];
+		if (lines.length == 2) {
+			this._playState = "[stopped]";
+			this._songTitle="n/a";
+			this._volume = 0;
+			this._songNo = -1;
+			this._playlistSongCount = -1;
+			this._currTime = -1;
+			this._totalTime= -1;
+			let setting_line = lines[0].split(/   /);
+			this._volume = parseInt(setting_line[0].split(/: /)[1].split(/%/)[0]);
+			this._repeat  = setting_line[1].match(/off/)==null;
+			this._random  = setting_line[2].match(/off/)==null;
+			this._single  = setting_line[3].match(/off/)==null;
+			this._consume = setting_line[4].match(/off/)==null;
+		}
+		else {
+			this._songTitle = lines[0];
 
-		let state_line = lines[1].split(' ');
-		this._playState = state_line[0];
-		let nos = state_line[1].split('/');
-		this._songNo = parseInt(nos[0].split('#')[1]);
-		this._playlistSongCount = parseInt(nos[1])
-		let times = state_line[2].split('/');
-		this._currTime = times[0];
-		this._totalTime= times[1];
+			let state_line = lines[1].split(' ');
+			this._playState = state_line[0];
+			let nos = state_line[1].split('/');
+			this._songNo = parseInt(nos[0].split('#')[1]);
+			this._playlistSongCount = parseInt(nos[1])
+			let times = state_line[2].split('/');
+			this._currTime = times[0];
+			this._totalTime= times[1];
 
-		let setting_line = lines[2].split(/   /);
-		this._volume = parseInt(setting_line[0].split(/: /)[1].split(/%/)[0]);
-		this._repeat  = setting_line[1].match(/off/)==null;
-		this._random  = setting_line[2].match(/off/)==null;
-		this._single  = setting_line[3].match(/off/)==null;
-		this._consume = setting_line[4].match(/off/)==null;
-
+			let setting_line = lines[2].split(/   /);
+			this._volume = parseInt(setting_line[0].split(/: /)[1].split(/%/)[0]);
+			this._repeat  = setting_line[1].match(/off/)==null;
+			this._random  = setting_line[2].match(/off/)==null;
+			this._single  = setting_line[3].match(/off/)==null;
+			this._consume = setting_line[4].match(/off/)==null;
+		}
 	},
 
 	_updateMenu: function(msg) {
