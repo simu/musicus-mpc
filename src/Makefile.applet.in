@@ -58,7 +58,7 @@ musicus_applet.o: musicus_applet.c $(HEADERS)
 	$(CC) -c $(CFLAGS) $(APPLET_CFLAGS) $(LIBMPD_CFLAGS) -o musicus_applet.o musicus_applet.c
 
 musicus_applet: musicus_applet.o $(COMMON_OBJS)
-	$(CC) $(FULL_LIBS) -o musicus_applet musicus_applet.o $(COMMON_OBJS)
+	$(CC) -o musicus_applet musicus_applet.o $(COMMON_OBJS) $(FULL_LIBS)
 
 clean:
 	touch $(ALL_OBJS)

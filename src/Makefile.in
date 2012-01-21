@@ -62,16 +62,16 @@ musicus.o: musicus.c $(HEADERS)
 	$(CC) -c $(CFLAGS) $(GTK_CFLAGS) $(LIBMPD_CFLAGS) -o musicus.o musicus.c
 
 musicus-mpc: musicus.o $(COMMON_OBJS)
-	$(CC) $(FULL_LIBS) -o musicus-mpc musicus.o $(COMMON_OBJS)
+	$(CC) -o musicus-mpc musicus.o $(COMMON_OBJS) $(FULL_LIBS)
 
 cli: cli.o $(COMMON_OBJS)
-	$(CC) $(FULL_LIBS) -o cli cli.o $(COMMON_OBJS)
+	$(CC) -o cli cli.o $(COMMON_OBJS) $(FULL_LIBS)
 
 media_browser_so.o: media_browser_standalone.c $(HEADERS)
 	$(CC) -c $(FULL_CFLAGS) -o media_browser_so.o media_browser_standalone.c
 
 media_browser: media_browser_so.o $(COMMON_OBJS)
-	$(CC) $(FULL_LIBS) -o media_browser media_browser_so.o $(COMMON_OBJS)
+	$(CC) -o media_browser media_browser_so.o $(COMMON_OBJS) $(FULL_LIBS)
 
 clean:
 	touch $(ALL_OBJS)
