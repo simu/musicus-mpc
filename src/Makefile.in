@@ -25,8 +25,8 @@ ALL_OBJS=$(COMMON_OBJS) cli.o musicus.o
 all: $(BINARIES)
 
 # do applet build
-applet:
-	$(MAKE) -f Makefile.applet
+#applet:
+#	$(MAKE) -f Makefile.applet
 
 mpd.o: mpd.c $(HEADERS)
 	$(CC) -c $(CFLAGS) $(GLIB_CFLAGS) $(LIBMPD_CFLAGS) -o mpd.o mpd.c
@@ -78,4 +78,4 @@ clean:
 	rm -f $(ALL_OBJS)
 	touch $(BINARIES)
 	rm -f $(BINARIES)
-	$(MAKE) -f Makefile.applet clean
+	#$(MAKE) -f Makefile.applet clean

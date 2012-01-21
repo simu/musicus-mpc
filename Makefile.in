@@ -31,6 +31,9 @@ all: code
 
 code: applet musicus
 
+gnome-shell-ext:
+	cd gnome-shell-extension && $(MAKE) -e
+
 applet: config.h GNOME_MusicusApplet.server
 	cd src && $(MAKE) -e applet
 
