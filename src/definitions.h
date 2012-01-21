@@ -26,7 +26,7 @@
 /**
  * \mainpage Musicus MPD client 
  *
- * Don't miss to check the project's main page at http://musicus-mpc.berlios.de
+ * Don't miss to check the project's main page at http://simu.github.com/musicus-mpc
  *
  * Musicus MPD client (musicus-mpc) is a client for the 
  * music player daemon MPD (<a href="http://musicpd.org">MPD homepage</a>)
@@ -35,8 +35,8 @@
  * The other is a standalone version of the Playlist/Media Browser component
  * of the applet.
  *
- * The project is currently hosted on berliOS. Visit the project overview
- * page at http://developer.berlios.de/projects/musicus-mpc/
+ * The project is currently hosted on github. Visit the project overview
+ * page at http://github.com/simu/musicus-mpc
  */
 
 #ifndef __definitions_h

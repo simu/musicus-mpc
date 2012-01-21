@@ -1,5 +1,5 @@
 PROJECT_NAME="musicus mpd client"
-PROJECT_NUMBER=0.1a
+PROJECT_NUMBER=0.1d
 
 OUTPUT_DIRECTORY="doc/"
 
