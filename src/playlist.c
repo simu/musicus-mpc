@@ -68,7 +68,7 @@ void mpd_pl_container_free(MpdPlContainer *plc) {
 	if(plc->list != NULL) {
 		for(i=0;(i<plc->length);++i)
 			if(plc->list[i] != NULL)
-                mpd_freeSong(plc->list[i]);
+				mpd_freeSong(plc->list[i]);
 		free(plc->list);
 	}
 	free(plc);
