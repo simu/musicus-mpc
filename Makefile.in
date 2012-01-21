@@ -11,7 +11,7 @@ SHARE_DIR=$(prefix)/share/gnome-applets
 
 #don't edit below
 
-VERSION=0.1c
+VERSION=0.1d
 
 .PHONY: clean install local_install dist doxy GNOME_MusicusApplet.server uninstall deb rpm
 
