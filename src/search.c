@@ -36,13 +36,25 @@ static void mark_type(GtkWidget *widget, gpointer data);
 static void mpd_search(GtkWidget *widget, gpointer data);
 
 /************** local variables **************/
-static gint search_type;
+enum search_type {
+	ARTIST,
+	ALBUM,
+	TITLE,
+	FILENAME,
+};
+static enum search_type search_type;
+static enum search_type search_types[4]={
+	ARTIST,
+	ALBUM,
+	TITLE,
+	FILENAME,
+};
 
 /************** implementation  **************/
 
 GtkWidget *init_search_widget(GtkWidget *parent_window) {
 
-    GtkWidget *widget;
+	GtkWidget *widget;
 	GtkWidget *entry, *button, *hbox, *radio_group[4];
 	gint i;
 	const gchar *type[4] = { "Artist", "Album", "Title", "Filename" };
@@ -57,21 +69,16 @@ GtkWidget *init_search_widget(GtkWidget *parent_window) {
 
 	for(i = 0; i < 4; i++) {
 		if(i == 0) {
-			radio_group[i] = gtk_radio_button_new_with_label(
-								NULL,
-								type[i]
-					);
+			radio_group[i] = gtk_radio_button_new_with_label(NULL, type[i]);
 			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio_group[i]), TRUE);
 		}
 		else {
 			radio_group[i] = gtk_radio_button_new_with_label_from_widget(
-								GTK_RADIO_BUTTON(radio_group[0]),
-								type[i]
-					);
+					GTK_RADIO_BUTTON(radio_group[0]), type[i]);
 			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio_group[i]), FALSE);
 		}
 		g_signal_connect(G_OBJECT(radio_group[i]), "toggled",
-						 G_CALLBACK(mark_type), (gpointer) i);
+				 G_CALLBACK(mark_type), &search_types[i]);
 		gtk_box_pack_start_defaults(GTK_BOX(hbox), radio_group[i]);
 	}
 	gtk_box_pack_start(GTK_BOX(widget), hbox,FALSE,FALSE, 0);
@@ -84,9 +91,9 @@ GtkWidget *init_search_widget(GtkWidget *parent_window) {
 	argument_list = g_list_append(argument_list, parent_window);
 
 	g_signal_connect(G_OBJECT(button), "clicked",
-					 G_CALLBACK(mpd_search), argument_list);
+			 G_CALLBACK(mpd_search), argument_list);
 	g_signal_connect(G_OBJECT(entry), "activate",
-					 G_CALLBACK(mpd_search), argument_list);
+			 G_CALLBACK(mpd_search), argument_list);
 	gtk_box_pack_start(GTK_BOX(widget), button,FALSE,FALSE,0);
 
 	return widget;
@@ -94,7 +101,7 @@ GtkWidget *init_search_widget(GtkWidget *parent_window) {
 
 /* marks type of the search */
 static void mark_type(GtkWidget *widget, gpointer data) {
-	search_type = (gint) data;
+	search_type = *(enum search_type *)data;
 	return;
 }
 
@@ -104,7 +111,7 @@ static void mpd_search(GtkWidget *widget, gpointer data) {
 	GList *args,*vbox_content,*argument_list;
 	gpointer list_data;
 	GtkWidget *vbox, *entry, *label, *result_tree_view, *add_button, *scrolled_window, *window;
-   	GtkBox *box;
+	GtkBox *box;
 	GtkBoxChild *child;
 	const gchar *entry_string;
 	gchar *search_string;
@@ -119,7 +126,7 @@ static void mpd_search(GtkWidget *widget, gpointer data) {
 	GList *song_handle_list;
 	MpdPlContainer *result_list;
 
-   	args = (GList *)data;
+	args = (GList *)data;
 
 
 	/* remove old results, if any */
@@ -149,9 +156,9 @@ static void mpd_search(GtkWidget *widget, gpointer data) {
 	/* table ^= search_type */
 	if(!mpd_check_connected(mpd_info.obj)) {
 		if(mpd_connect(mpd_info.obj)!=MPD_OK)  {
-		    msi_clear(&mpd_info);
-		    mpd_info.msi.connected = FALSE;
-		    return;
+			msi_clear(&mpd_info);
+			mpd_info.msi.connected = FALSE;
+			return;
 		}
 		msi_fill(&mpd_info);
 		mpd_info.msi.connected = TRUE;
@@ -167,11 +174,9 @@ static void mpd_search(GtkWidget *widget, gpointer data) {
 	 * prevents the list being killed when reaching
 	 * the end.
 	 */
-	for(
-		res_ptr =  mpd_data_get_first(result);
-		res_ptr != NULL;
-		res_ptr =  mpd_data_get_next_keep(res_ptr)
-	   )
+	for (res_ptr =  mpd_data_get_first(result);
+	     res_ptr != NULL;
+	     res_ptr =  mpd_data_get_next_keep(res_ptr))
 	{
 		/* count only songs ... */
 		if(res_ptr->type == MPD_DATA_TYPE_SONG)
@@ -195,11 +200,9 @@ static void mpd_search(GtkWidget *widget, gpointer data) {
 		 * result list
 		 */
 
-		for(
-			res_ptr =  mpd_data_get_first(result);
-			res_ptr != NULL;
-			res_ptr =  mpd_data_get_next_keep(res_ptr)
-		   )
+		for (res_ptr =  mpd_data_get_first(result);
+		     res_ptr != NULL;
+		     res_ptr =  mpd_data_get_next_keep(res_ptr))
 		{
 			/* only songs */
 			if(res_ptr->type == MPD_DATA_TYPE_SONG) {
@@ -222,9 +225,9 @@ static void mpd_search(GtkWidget *widget, gpointer data) {
 		argument_list = g_list_append(argument_list, tree_selection);
 		add_button = gtk_button_new_with_label("add selected songs");
 		g_signal_connect(GTK_BUTTON(add_button), "clicked",
-						 G_CALLBACK(mpd_add_song_list), argument_list);
+				 G_CALLBACK(mpd_add_song_list), argument_list);
 		/* g_signal_connect_swapped(GTK_BUTTON(add_button), "clicked",
-						 G_CALLBACK(gtk_widget_destroy), g_list_nth_data(data, 2)); */
+		   G_CALLBACK(gtk_widget_destroy), g_list_nth_data(data, 2)); */
 		gtk_box_pack_end(GTK_BOX(vbox), add_button,FALSE,FALSE,0);
 
 		/* put a scrolled window in between the treeview and the window... */
@@ -258,4 +261,4 @@ static void mpd_search(GtkWidget *widget, gpointer data) {
 
 
 /* vim:sts=4:shiftwidth=4
- */
+*/
