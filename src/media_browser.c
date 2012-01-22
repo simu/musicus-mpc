@@ -210,17 +210,11 @@ GtkWidget *init_mb_widget(gchar *folder_id) {
  */
 static gboolean media_browser_widget_update(gchar *folder_id, gchar *parent_id, gboolean jumpout) {
 	gboolean ret = FALSE;
-	gboolean up = FALSE;
-	gchar *folder, *parent;
+	gchar *folder;
 	if(jumpout) {
-		up = TRUE;
 		g_queue_pop_head(dir_stack);
 		media_database = GTK_TREE_STORE(g_queue_peek_head(dir_stack));
 		folder = (gchar*)g_queue_pop_head(parent_stack);
-		if(strcmp(folder,"")==0) /* root dir */
-			parent = "";
-		else
-			parent = (gchar*)g_queue_peek_head(parent_stack);
 		GList *last = g_list_last(GTK_BOX(nav_ButtonBox)->children);
 		GtkBoxChild *last_child = last->data;
 		GtkWidget *nav_btn_to_rem = last_child->widget;
@@ -232,7 +226,6 @@ static gboolean media_browser_widget_update(gchar *folder_id, gchar *parent_id, 
 			g_queue_push_head(dir_stack,media_database);
 			g_queue_push_head(parent_stack, parent_id);
 			folder = folder_id;
-			parent = parent_id;
 			gchar *button_lbl = g_strrstr(folder_id, "/");
 			if(strcmp(folder_id, "/") == 0)
 				button_lbl = " /";
