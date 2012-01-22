@@ -258,11 +258,12 @@ Musicus.prototype = {
 		else {
 			this._songTitle = lines[0];
 
+			// does not always work properly.
 			let state_line = lines[1].split(' ');
 			this._playState = state_line[0];
 			let nos = state_line[1].split('/');
 			this._songNo = parseInt(nos[0].split('#')[1]);
-			this._playlistSongCount = parseInt(nos[1])
+			this._playlistSongCount = parseInt(nos[1]);
 			let times = state_line[2].split('/');
 			this._currTime = times[0];
 			this._totalTime= times[1];
@@ -289,11 +290,9 @@ Musicus.prototype = {
 			let section = new PopupMenu.PopupMenuSection("MPD state");
 			let item;
 			for (let itemText in this.items){
-				var t = this
+				var t = this;
 				let _items = this.items[itemText].map(function(x){return t[x];});
-				debug(_items.toString());
 				itemStr = vsprintf(itemText.toString(), _items);
-				debug(itemStr.toString());
 				item = new PopupMenu.PopupMenuItem("");
 				item.addActor(new St.Label({
 					text:itemStr.toString(),

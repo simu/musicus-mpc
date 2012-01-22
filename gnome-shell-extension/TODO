@@ -1,0 +1,5 @@
+Notes
+-----
+Implement command line client for mpd with easier-to-parse (json?) output.
+Improve Extension interface.
+Incorporate GSettings (GNOME 3.3/3.4).
