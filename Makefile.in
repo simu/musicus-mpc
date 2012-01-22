@@ -29,13 +29,13 @@ unexport BBINARIES
 
 all: code
 
-code: applet musicus
+code: musicus
 
 gnome-shell-ext:
 	cd gnome-shell-extension && $(MAKE) -e
 
-applet: config.h GNOME_MusicusApplet.server
-	cd src && $(MAKE) -e applet
+#applet: config.h GNOME_MusicusApplet.server
+#	cd src && $(MAKE) -e applet
 
 musicus: config.h
 	cd src && $(MAKE) -e
@@ -45,28 +45,28 @@ local_install: code
 	cp $(SBINARIES) bin/
 
 install:
-	mkdir -p $(INSTALL_DIR) $(libexecdir)
 	install src/musicus-mpc $(INSTALL_DIR)
-	install src/musicus_applet $(libexecdir)
+	#mkdir -p $(INSTALL_DIR) $(libexecdir)
+	#install src/musicus_applet $(libexecdir)
 	$([ -h $(INSTALL_DIR)/musicus ] && rm $(INSTALL_DIR)/musicus)
 	ln -s $(INSTALL_DIR)/musicus-mpc $(INSTALL_DIR)/musicus
-	mkdir -p $(BONOBO_DIR)
-	cp GNOME_MusicusApplet.server $(BONOBO_DIR)
+	#mkdir -p $(BONOBO_DIR)
+	#cp GNOME_MusicusApplet.server $(BONOBO_DIR)
 	mkdir -p $(DATA_DIR)
 	cp data/musicus-mpc.png $(DATA_DIR)
-	cp data/musicus-mpc.png $(DATA_DIR)/musicus-applet.png
-	mkdir -p $(SHARE_DIR)/musicus_applet
-	cp data/GNOME_MusicusApplet.xml $(SHARE_DIR)/musicus_applet
+	#cp data/musicus-mpc.png $(DATA_DIR)/musicus-applet.png
+	#mkdir -p $(SHARE_DIR)/musicus_applet
+	#cp data/GNOME_MusicusApplet.xml $(SHARE_DIR)/musicus_applet
 
 uninstall: 
 	$(cd $(INSTALL_DIR) && rm -r musicus musicus-mpc)
-	$(cd $(libexecdir) && rm -r musicus_applet)
-	rm -f $(BONOBO_DIR)/GNOME_MusicusApplet.server
+	#$(cd $(libexecdir) && rm -r musicus_applet)
+	#rm -f $(BONOBO_DIR)/GNOME_MusicusApplet.server
 	rm -f $(DATA_DIR)/musicus_mpc.png
-	rm -rf $(SHARE_DIR)/musicus_applet
+	#rm -rf $(SHARE_DIR)/musicus_applet
 
-GNOME_MusicusApplet.server: GNOME_MusicusApplet.server.in
-	?sed -e 's#?bindir#$(libexecdir)#g' GNOME_MusicusApplet.server.in > GNOME_MusicusApplet.server
+#GNOME_MusicusApplet.server: GNOME_MusicusApplet.server.in
+#	?sed -e 's#?bindir#$(libexecdir)#g' GNOME_MusicusApplet.server.in > GNOME_MusicusApplet.server
 
 config.h: config.h.in
 	?sed -e 's#?bindir#$(INSTALL_DIR)#g' -e 's#?datadir#$(DATA_DIR)#g' -e 's#?sharedir#$(SHARE_DIR)#g' -e 's#?bonobodir#$(BONOBO_DIR)#g' -e 's#?version#$(VERSION)#g' config.h.in > config.h
